@@ -1,0 +1,50 @@
+[project]
+name = "alfred-core"
+version = "0.1.0"
+description = "Portable, host-agnostic core engine extracted from the Alfred Dev plugin (phase 0 of the Claude Code decoupling)."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Fer" }]
+keywords = ["agents", "sdlc", "orchestration", "state-machine", "memory"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/alfred_core"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+# Phase-0 policy: the extracted core and the carried-over tests are kept
+# FAITHFUL to the alfred-dev original (no reformatting, so diffs against
+# upstream stay reviewable). They are linted ONLY against functional defects
+# (F = pyflakes); inherited style (E/I/UP/B) is explicit debt for the phase-1
+# cleanup. New code (test_orchestrator_core, test_smoke_imports, __init__) is
+# held to the full ruleset.
+[tool.ruff.lint.per-file-ignores]
+"src/alfred_core/*.py" = ["E", "I", "UP", "B"]
+# test_memory carries inherited benign F841 (return values assigned but unused
+# in asserts) preexisting upstream; the call still runs (DB side effect).
+"tests/test_memory.py" = ["E", "I", "UP", "B", "F841"]
+"tests/test_memory_config.py" = ["E", "I", "UP", "B"]
+"tests/test_personality.py" = ["E", "I", "UP", "B"]
+"tests/test_config_loader.py" = ["E", "I", "UP", "B"]
