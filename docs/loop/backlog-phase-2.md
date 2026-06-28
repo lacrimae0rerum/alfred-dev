@@ -45,7 +45,7 @@ humana — el loop debe PARAR y consultar.
   almacenamiento de secretos, permite contenido limpio.
 - **CA:** suite verde; cubre deny y allow.
 
-## [ ] T2.2 — `evaluate_command` (comandos peligrosos)
+## [x] T2.2 — `evaluate_command` (comandos peligrosos)
 
 - **Crear:** `src/alfred_core/guards/commands.py`.
 - **Portar la lógica PURA** desde `alfred-dev/hooks/dangerous-command-guard.py`:
