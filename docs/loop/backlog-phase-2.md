@@ -17,7 +17,7 @@ humana — el loop debe PARAR y consultar.
 
 ---
 
-## [ ] T2.0 — Tipo `Decision` y esqueleto del paquete `guards`
+## [x] T2.0 — Tipo `Decision` y esqueleto del paquete `guards`
 
 - **Crear:** `src/alfred_core/guards/__init__.py`, `src/alfred_core/guards/decision.py`.
 - **Decision** (`decision.py`): dataclass inmutable `Decision` con:
