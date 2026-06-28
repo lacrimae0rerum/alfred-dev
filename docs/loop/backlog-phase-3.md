@@ -49,7 +49,7 @@
   frontmatter, valor CSV (`tools: A,B,C`).
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T3.1 — Modelos neutros (`AgentSpec` / `CommandSpec` / `SkillSpec`)
+## [x] T3.1 — Modelos neutros (`AgentSpec` / `CommandSpec` / `SkillSpec`)
 
 - **Crear:** `src/alfred_core/compiler/models.py`.
 - **Dataclasses inmutables** con `to_dict()` serializable a JSON:
