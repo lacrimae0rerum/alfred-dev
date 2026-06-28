@@ -48,8 +48,10 @@ docs/loop/backlog-phase-2.md. Una tarea por iteración.
 - **Sin secretos:** antes de cada commit, revisar que el diff no introduce credenciales.
 - **Fidelidad de port:** al traer lógica de `alfred-dev`, portar la política pura, no el
   `main()` / transporte de hooks.
-- **Límite de alcance:** el loop solo cubre T2.0–T2.4. T2.5 (`[DESIGN]`) es checkpoint
-  humano: parar y consultar.
+- **Límite de alcance:** el checkpoint de diseño T2.5 (`[DESIGN]`) se resolvió con Fer
+  el 2026-06-28; sus decisiones de arquitectura están en el backlog. El loop cubre ahora
+  T2.0–T2.4 (hechas) y T2.5a–T2.5c (desglose mecánico del adaptador de hooks). No quedan
+  tareas `[DESIGN]` pendientes; si apareciera una nueva, aplicar el checkpoint y parar.
 - **Parar ante lo inesperado:** si una tarea resulta ambigua, mal dimensionada o requiere
   una decisión de arquitectura no prevista, PARAR y reportar en vez de improvisar.
 
@@ -58,3 +60,11 @@ docs/loop/backlog-phase-2.md. Una tarea por iteración.
 - Suite: **207 tests verdes**, ruff limpio.
 - Backlog: T2.0–T2.4 pending, T2.5 marcada `[DESIGN]`.
 - Último commit: `ed76b98` (Fase 1, HostContext).
+
+## Progreso (2026-06-28)
+
+- T2.0–T2.4 completadas vía loop (TDD, gate verde, un commit por tarea):
+  `63cd8e0`, `0e0545f`, `0fe325c`, `1b1809d`, `a9b9efb`. Suite: **318 verdes**.
+- Checkpoint T2.5 (`[DESIGN]`) resuelto con Fer: adaptador en `hooks/` con scripts finos
+  por herramienta; transporte testeable en `src/alfred_core/adapters/claude_code.py`.
+  Desglosado en T2.5a–T2.5c, ahora autónomas. Loop reanudado sobre ellas.

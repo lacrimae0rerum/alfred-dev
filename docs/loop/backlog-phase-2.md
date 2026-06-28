@@ -92,15 +92,78 @@ humana — el loop debe PARAR y consultar.
 
 ---
 
-## [DESIGN] T2.5 — Adaptador de hooks de Claude Code (NO autónomo)
+## [x] T2.5 — Checkpoint de diseño del adaptador de hooks (RESUELTO)
 
 Envolver las funciones `evaluate_*` en los scripts de hook reales (exit 2 / JSON
-`permissionDecision`). Requiere decidir empaquetado y ubicación del adaptador. **Parar
-y consultar**: fuera del alcance del loop autónomo.
+`permissionDecision`). El checkpoint `[DESIGN]` se resolvió con Fer el 2026-06-28: las
+decisiones de arquitectura están tomadas (ver abajo) y la implementación se desglosa en
+T2.5a–T2.5c, que son **mecánicas con gate de test clara → aptas para loop autónomo**.
+
+### Diseño aprobado (decisiones de Fer, 2026-06-28)
+
+- **Ubicación:** carpeta `hooks/` en la raíz del repo con **scripts finos** (estilo
+  plugin `alfred-dev`), uno **por herramienta**: `hooks/write-guard.py`,
+  `hooks/command-guard.py`, `hooks/read-guard.py`. Cada script es solo wiring
+  (importar + leer stdin + emitir).
+- **Transporte testeable en el paquete:** el mapeo `Decision → transporte CC` vive en
+  `src/alfred_core/adapters/claude_code.py` (no en los scripts), para poder testearlo
+  sin `subprocess`. API propuesta:
+  - `read_tool_input(stream) -> dict` (parsea el JSON de stdin; fail-closed si rompe).
+  - `emit(decision: Decision) -> int` → traduce a transporte y devuelve exit code:
+    - `deny` → escribe el aviso en stderr y **exit 2**.
+    - `allow` con autoaprobación (helper seguro) → JSON `permissionDecision:"allow"`, exit 0.
+    - `allow` normal → **exit 0** silencioso.
+    - `ask` → JSON `permissionDecision:"ask"`, exit 0.
+  - fallo de parseo de stdin → **deny / exit 2** (fail-closed, igual que el original).
+- **Bootstrap de `sys.path`:** cada script en `hooks/` añade `<repo>/src` calculado desde
+  `__file__` para no depender de instalación previa del paquete.
+- **Registro:** un `hooks/hooks.json` con bloques `PreToolUse` por matcher
+  (`Write|Edit` → write-guard; `Bash` → command-guard; `Read|Glob|Grep` → read-guard).
+
+El desglose implementable vive como tareas autónomas T2.5a–T2.5c más abajo.
+
+---
+
+## [ ] T2.5a — Transporte del adaptador (`emit` / `read_tool_input`)
+
+- **Crear:** `src/alfred_core/adapters/__init__.py`, `src/alfred_core/adapters/claude_code.py`.
+- **API:**
+  - `read_tool_input(stream) -> dict`: parsea el JSON de stdin de PreToolUse.
+    Fail-closed: si el parseo lanza, propaga un sentinel que el caller traduce a deny.
+  - `emit(decision: Decision, *, out, err) -> int`: traduce a transporte y devuelve
+    exit code, escribiendo en los streams dados (no en `sys.*`, para testear):
+    - `deny` → aviso a `err` y **return 2**.
+    - `allow` con `reason` de autoaprobación → JSON `permissionDecision:"allow"` a `out`, return 0.
+    - `allow` normal → return 0 silencioso.
+    - `ask` → JSON `permissionDecision:"ask"` a `out`, return 0.
+- **Tests:** `tests/test_adapter_claude_code.py` — cada outcome → exit/stdout/stderr
+  esperado; stdin inválido → deny/exit 2. Sin `subprocess`: streams en memoria (`io.StringIO`).
+- **CA:** suite verde; ruff limpio.
+
+## [ ] T2.5b — Scripts finos de hook por herramienta
+
+- **Crear:** `hooks/write-guard.py`, `hooks/command-guard.py`, `hooks/read-guard.py`.
+- **Cada script:** bootstrap de `sys.path` (añade `<repo>/src` desde `__file__`),
+  `read_tool_input(sys.stdin)`, construye el `GuardAction` correspondiente
+  (`write`→`file_path`+`content`/`new_string`; `command`→`command`; `read`→`file_path`/`path`),
+  llama a `CoreGuard().evaluate(...)`, y `sys.exit(emit(decision, out=sys.stdout, err=sys.stderr))`.
+  Solo wiring; nada de lógica de política en el script.
+- **Tests:** `tests/test_hooks_smoke.py` — por `subprocess`, un payload allow y uno deny
+  por script (espejo de los end-to-end de `alfred-dev`): write de secreto → exit 2;
+  `rm -rf /` → exit 2; lectura de `.env` → exit 2; y sus contrapartes allow → exit 0.
+- **CA:** suite verde; ruff limpio.
+
+## [ ] T2.5c — Registro `hooks/hooks.json`
+
+- **Crear:** `hooks/hooks.json` con bloques `PreToolUse` por matcher:
+  `Write|Edit` → write-guard; `Bash` → command-guard; `Read|Glob|Grep` → read-guard.
+- **Tests:** `tests/test_hooks_registration.py` — el JSON parsea; cada entrada apunta a
+  un script existente en `hooks/`; los matchers esperados están presentes.
+- **CA:** suite verde; ruff limpio. Cierra la fase 2.
 
 ---
 
 ## Definición de "fase completa"
 
-T2.0–T2.4 en `[x]`, suite verde, ruff limpio, y un commit por tarea. T2.5 queda como
-checkpoint humano para la siguiente sesión.
+T2.0–T2.5c en `[x]`, suite verde, ruff limpio, y un commit por tarea. El checkpoint de
+diseño T2.5 se resolvió con Fer (2026-06-28); T2.5a–c completan el adaptador de hooks.
