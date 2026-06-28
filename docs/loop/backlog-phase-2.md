@@ -153,7 +153,7 @@ El desglose implementable vive como tareas autónomas T2.5a–T2.5c más abajo.
   `rm -rf /` → exit 2; lectura de `.env` → exit 2; y sus contrapartes allow → exit 0.
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T2.5c — Registro `hooks/hooks.json`
+## [x] T2.5c — Registro `hooks/hooks.json`
 
 - **Crear:** `hooks/hooks.json` con bloques `PreToolUse` por matcher:
   `Write|Edit` → write-guard; `Bash` → command-guard; `Read|Glob|Grep` → read-guard.
