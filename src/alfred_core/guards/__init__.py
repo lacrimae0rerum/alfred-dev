@@ -7,5 +7,6 @@ wraps these functions in the actual Claude Code hook scripts.
 """
 
 from .decision import Decision, allow, ask, deny
+from .secrets_guard import evaluate_write
 
-__all__ = ["Decision", "allow", "deny", "ask"]
+__all__ = ["Decision", "allow", "deny", "ask", "evaluate_write"]

@@ -29,7 +29,7 @@ humana — el loop debe PARAR y consultar.
   `blocked` correcto por outcome.
 - **CA:** `from alfred_core.guards import Decision, allow, deny, ask` funciona; suite verde.
 
-## [ ] T2.1 — `evaluate_write` (política de secretos)
+## [x] T2.1 — `evaluate_write` (política de secretos)
 
 - **Crear:** `src/alfred_core/guards/secrets_guard.py`.
 - **API:** `evaluate_write(path: str, content: str) -> Decision`.
