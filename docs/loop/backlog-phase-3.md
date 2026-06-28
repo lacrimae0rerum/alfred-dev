@@ -83,7 +83,7 @@
   mapeadas; el body conserva el contenido tras el frontmatter.
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T3.4 — Compilación de árbol + emisión JSON
+## [x] T3.4 — Compilación de árbol + emisión JSON
 
 - **Editar:** `src/alfred_core/compiler/compile.py` (+ export en `__init__`).
 - **API:** `compile_tree(root: Path) -> dict` que recorre `agents/`,
