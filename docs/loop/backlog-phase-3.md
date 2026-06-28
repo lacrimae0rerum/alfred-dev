@@ -70,7 +70,7 @@
   espacios, tool desconocida conservada, `Agent` y `Task` → `subagent`.
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T3.3 — Compiladores por artefacto
+## [x] T3.3 — Compiladores por artefacto
 
 - **Crear:** `src/alfred_core/compiler/compile.py`.
 - **API:** `compile_agent(text) -> AgentSpec`, `compile_command(name, text) ->
