@@ -140,7 +140,7 @@ El desglose implementable vive como tareas autónomas T2.5a–T2.5c más abajo.
   esperado; stdin inválido → deny/exit 2. Sin `subprocess`: streams en memoria (`io.StringIO`).
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T2.5b — Scripts finos de hook por herramienta
+## [x] T2.5b — Scripts finos de hook por herramienta
 
 - **Crear:** `hooks/write-guard.py`, `hooks/command-guard.py`, `hooks/read-guard.py`.
 - **Cada script:** bootstrap de `sys.path` (añade `<repo>/src` desde `__file__`),
