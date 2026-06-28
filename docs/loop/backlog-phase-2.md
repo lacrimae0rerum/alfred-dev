@@ -65,7 +65,7 @@ humana — el loop debe PARAR y consultar.
 - **CA:** suite verde; paridad de comportamiento con los casos del test original.
 - **Nota:** tarea grande (~20 detectores). Si se atasca, reportar y parar; no trocear sola.
 
-## [ ] T2.3 — `evaluate_read` (lectura de ficheros sensibles)
+## [x] T2.3 — `evaluate_read` (lectura de ficheros sensibles)
 
 - **Crear:** `src/alfred_core/guards/reads.py`.
 - **Portar** los detectores de `alfred-dev/hooks/sensitive-read-guard.py`
