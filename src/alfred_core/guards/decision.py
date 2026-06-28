@@ -28,9 +28,14 @@ class Decision:
         return self.outcome == "deny"
 
 
-def allow() -> Decision:
-    """Permit the action; no reason needed."""
-    return Decision(outcome="allow")
+def allow(reason: str = "") -> Decision:
+    """Permit the action.
+
+    A non-empty ``reason`` marks an *explicit* approval (e.g. a recognized safe
+    helper) that the hook adapter surfaces as an auto-approve; a bare ``allow()``
+    is a silent pass-through.
+    """
+    return Decision(outcome="allow", reason=reason)
 
 
 def deny(reason: str) -> Decision:

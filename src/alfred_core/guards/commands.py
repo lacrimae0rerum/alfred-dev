@@ -461,7 +461,7 @@ def evaluate_command(command: str) -> Decision:
     """
     try:
         if _is_safe_alfred_helper_command(command):
-            return allow()
+            return allow("recognized safe Alfred helper")
         reason = _find_dangerous_reason(command)
         if reason:
             return deny(reason)

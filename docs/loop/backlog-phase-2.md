@@ -124,7 +124,7 @@ El desglose implementable vive como tareas autónomas T2.5a–T2.5c más abajo.
 
 ---
 
-## [ ] T2.5a — Transporte del adaptador (`emit` / `read_tool_input`)
+## [x] T2.5a — Transporte del adaptador (`emit` / `read_tool_input`)
 
 - **Crear:** `src/alfred_core/adapters/__init__.py`, `src/alfred_core/adapters/claude_code.py`.
 - **API:**
