@@ -26,6 +26,7 @@ from typing import Any, Dict, List, Optional, Tuple
 if __package__ in {None, ""}:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from alfred_core.host import HostContext
 from alfred_core.optional_agents import (
     build_optional_agent_flags,
     get_optional_agent_display_label,
@@ -251,7 +252,7 @@ def load_project_config(project_dir: str) -> Dict[str, Any]:
     Returns:
         Configuración fusionada y lista para consumo operativo.
     """
-    config_path = os.path.join(project_dir, ".claude", "alfred-dev.local.md")
+    config_path = HostContext(project_dir).config_path
     config = load_config(config_path)
     detected_stack = detect_stack(project_dir)
 
@@ -502,7 +503,7 @@ def update_project_config_section(
     include_defaults: bool = True,
 ) -> Dict[str, Any]:
     """Actualiza una sección de la config persistida del proyecto."""
-    path = os.path.join(project_dir, ".claude", "alfred-dev.local.md")
+    path = HostContext(project_dir).config_path
     return update_config_section(
         path,
         section_name,
@@ -574,7 +575,7 @@ def save_project_config(
     include_defaults: bool = True,
 ) -> str:
     """Guarda la configuración del proyecto en ``.claude/alfred-dev.local.md``."""
-    path = os.path.join(project_dir, ".claude", "alfred-dev.local.md")
+    path = HostContext(project_dir).config_path
     save_config(path, config, notes=notes, include_defaults=include_defaults)
     return path
 
@@ -650,7 +651,7 @@ def ensure_bootstrap_project_config(
     default_note: str = _BOOTSTRAP_LOCAL_CONFIG_NOTE,
 ) -> str:
     """Aplica el bootstrap canónico sobre `.claude/alfred-dev.local.md`."""
-    path = os.path.join(project_dir, ".claude", "alfred-dev.local.md")
+    path = HostContext(project_dir).config_path
     ensure_bootstrap_local_config(path, default_note=default_note)
     return path
 
@@ -833,11 +834,7 @@ def is_autopilot_enabled_for_project(
     if is_autopilot_configured(config):
         return True
 
-    resolved_state_path = state_path or os.path.join(
-        project_dir,
-        ".claude",
-        "alfred-dev-state.json",
-    )
+    resolved_state_path = state_path or HostContext(project_dir).state_path
     try:
         with open(resolved_state_path, "r", encoding="utf-8") as fh:
             state = json.load(fh)

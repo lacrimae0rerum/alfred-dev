@@ -42,6 +42,7 @@ import sys
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
+from alfred_core.host import HostContext
 from alfred_core.optional_agents import get_optional_agent_names, get_optional_integrations
 
 # --- Constantes de tipos de gate -------------------------------------------
@@ -702,7 +703,9 @@ def run_flow(
             f"Flujos disponibles: {', '.join(FLOWS.keys())}"
         )
 
-    resolved_project_dir = os.path.abspath(project_dir or os.getcwd())
+    # Resolve via HostContext so CLAUDE_PROJECT_DIR is honored when no explicit
+    # project_dir is given (explicit-arg > CLAUDE_PROJECT_DIR > cwd).
+    resolved_project_dir = HostContext.from_env(project_dir).project_dir
 
     # --- 2. Validar equipo_sesion si se proporcionó ---
     equipo_error = None
