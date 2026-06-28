@@ -78,7 +78,7 @@ humana — el loop debe PARAR y consultar.
   `alfred-dev/tests/test_sensitive_read_guard.py` adaptado.
 - **CA:** suite verde.
 
-## [ ] T2.4 — Puerto `ToolGuard` (fachada unificada)
+## [x] T2.4 — Puerto `ToolGuard` (fachada unificada)
 
 - **Crear/editar:** `src/alfred_core/guards/__init__.py`.
 - **Definir** el puerto `ToolGuard` (typing.Protocol) con un método

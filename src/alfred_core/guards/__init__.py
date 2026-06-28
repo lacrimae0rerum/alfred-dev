@@ -8,6 +8,7 @@ wraps these functions in the actual Claude Code hook scripts.
 
 from .commands import evaluate_command
 from .decision import Decision, allow, ask, deny
+from .facade import CoreGuard, GuardAction, ToolGuard
 from .reads import evaluate_read
 from .secrets_guard import evaluate_write
 
@@ -19,4 +20,7 @@ __all__ = [
     "evaluate_write",
     "evaluate_command",
     "evaluate_read",
+    "ToolGuard",
+    "CoreGuard",
+    "GuardAction",
 ]
