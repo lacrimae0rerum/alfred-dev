@@ -60,7 +60,7 @@
   (round-trip de claves, JSON-serializable con `json.dumps`).
 - **CA:** suite verde; ruff limpio.
 
-## [ ] T3.2 — Mapa de tool names (`map_tools`)
+## [x] T3.2 — Mapa de tool names (`map_tools`)
 
 - **Crear:** `src/alfred_core/compiler/tools_map.py`.
 - **API:** `map_tool(name: str) -> str` y `map_tools(value) -> list[str]`
