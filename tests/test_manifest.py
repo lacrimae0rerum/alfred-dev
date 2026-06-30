@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -73,6 +74,15 @@ class ManifestTest(unittest.TestCase):
         self.assertEqual(len(list((ROOT / "prompts").glob("*.md"))), 26)
         self.assertEqual(len(list((ROOT / "templates").glob("*.md"))), 7)
         self.assertTrue((ROOT / "hooks" / "hooks.json").is_file())
+
+    def test_codex_agent_and_hook_files_parse(self) -> None:
+        for path in sorted((ROOT / ".codex" / "agents").glob("*.toml")):
+            with self.subTest(path=path.name):
+                tomllib.loads(path.read_text(encoding="utf-8"))
+
+        hooks = json.loads((ROOT / "hooks" / "hooks.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(hooks), {"hooks"})
+        self.assertIn("SessionStart", hooks["hooks"])
 
 
 if __name__ == "__main__":
