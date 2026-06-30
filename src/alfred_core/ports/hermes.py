@@ -20,16 +20,9 @@ from __future__ import annotations
 
 import json
 import os
-import subprocess
-import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-from ..guards import Decision, GuardAction
-from ..guards import evaluate_command as _evaluate_command
-from ..guards import evaluate_read as _evaluate_read
-from ..guards import evaluate_write as _evaluate_write
-from ..host import HostContext, DEFAULT_STATE_DIR_NAME
 from . import (
     AgentRunner,
     AgentSession,
@@ -65,28 +58,24 @@ class HermesAgentRunner(AgentRunner):
         workdir: str | None = None,
     ) -> AgentSession:
         # Import here to avoid circular imports at module load time
-        from hermes_tools import cronjob
+        from hermes_tools import delegate_task as _delegate
 
         params: dict[str, Any] = {
-            "action": "create",
-            "prompt": prompt,
-            "schedule": "once",
-            "deliver": deliver or "local",
+            "goal": prompt,
         }
         if skills:
-            params["skills"] = skills
-        if context_from:
-            params["context_from"] = context_from
+            params["context"] = f"Load skills: {', '.join(skills)}"
         if model:
             params["model"] = model
-        if workdir:
-            params["workdir"] = workdir
 
-        result = cronjob(**params)
-        job_id = result.get("job_id", "")
+        result = _delegate(**params)
+        # delegate_task returns a dict; extract an identifier if available
+        session_id = str(id(result))  # fallback ID
+        if isinstance(result, dict):
+            session_id = result.get("session_id", result.get("id", session_id))
         return AgentSession(
-            session_id=job_id,
-            metadata={"type": "cronjob", "created": True},
+            session_id=session_id,
+            metadata={"type": "delegate_task", "result": result},
         )
 
     def join(self, session: AgentSession, message: str) -> str:
@@ -174,79 +163,38 @@ class HermesMemoryPort(MemoryPort):
 # ---------------------------------------------------------------------------
 
 class HermesHooksPort(HooksPort):
-    """HooksPort backed by Hermes' terminal tool for executing hook scripts.
+    """HooksPort backed by CoreGuard policy directly (no subprocess).
 
-    Evaluates guards by running the existing hook scripts (write-guard.py,
-    command-guard.py, read-guard.py) via terminal, which invoke the core
-    policy and return the decision via stdout/stderr.
+    Evaluates guards by calling the pure policy functions from
+    ``alfred_core.guards`` directly, eliminating the need for hook
+    scripts and subprocess calls.
     """
-
-    def __init__(self, hooks_dir: str | None = None):
-        """Initialize with the hooks directory.
-
-        Args:
-            hooks_dir: Path to the hooks/ directory. Defaults to
-                ``<repo_root>/hooks/``.
-        """
-        if hooks_dir is not None:
-            self.hooks_dir = Path(hooks_dir)
-        else:
-            # Default: look for hooks/ relative to this module's parent
-            self.hooks_dir = Path(__file__).resolve().parents[2] / "hooks"
-
-    def _run_hook(self, script_name: str, stdin_data: str) -> tuple[bool, str]:
-        """Run a hook script and return (blocked, reason).
-
-        Args:
-            script_name: Name of the script in hooks/.
-            stdin_data: JSON string to pipe as stdin.
-
-        Returns:
-            (blocked, reason) tuple.
-        """
-        script_path = self.hooks_dir / script_name
-        if not script_path.exists():
-            # Fail-open: if no hook script, allow the operation
-            return False, ""
-
-        try:
-            result = subprocess.run(
-                [sys.executable, str(script_path)],
-                input=stdin_data,
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            blocked = result.returncode != 0
-            reason = result.stderr.strip() if result.stderr else ""
-            return blocked, reason
-        except subprocess.TimeoutExpired:
-            return True, "hook timed out (fail-closed)"
-        except Exception as exc:
-            return True, f"hook error: {exc}"
 
     def evaluate_write(
         self, path: str, content: str
     ) -> dict[str, Any]:
-        """Evaluate a write through the write-guard hook."""
-        stdin_data = json.dumps({
-            "file_path": path,
-            "content": content,
-        })
-        blocked, reason = self._run_hook("write-guard.py", stdin_data)
-        return {"blocked": blocked, "reason": reason}
+        """Evaluate a write through CoreGuard."""
+        from ..guards import CoreGuard, GuardAction
+
+        guard = CoreGuard()
+        decision = guard.evaluate(GuardAction(kind="write", path=path, content=content))
+        return {"blocked": decision.blocked, "reason": decision.reason}
 
     def evaluate_command(self, command: str) -> dict[str, Any]:
-        """Evaluate a command through the command-guard hook."""
-        stdin_data = json.dumps({"command": command})
-        blocked, reason = self._run_hook("command-guard.py", stdin_data)
-        return {"blocked": blocked, "reason": reason}
+        """Evaluate a command through CoreGuard."""
+        from ..guards import CoreGuard, GuardAction
+
+        guard = CoreGuard()
+        decision = guard.evaluate(GuardAction(kind="command", command=command))
+        return {"blocked": decision.blocked, "reason": decision.reason}
 
     def evaluate_read(self, path: str) -> dict[str, Any]:
-        """Evaluate a read through the read-guard hook."""
-        stdin_data = json.dumps({"file_path": path})
-        blocked, reason = self._run_hook("read-guard.py", stdin_data)
-        return {"blocked": blocked, "reason": reason}
+        """Evaluate a read through CoreGuard."""
+        from ..guards import CoreGuard, GuardAction
+
+        guard = CoreGuard()
+        decision = guard.evaluate(GuardAction(kind="read", path=path))
+        return {"blocked": decision.blocked, "reason": decision.reason}
 
     def register_hook(
         self, hook_name: str, script_path: str, event: str
@@ -370,7 +318,6 @@ class HermesHostContextPort(HostContextPort):
 
         Precedence: explicit arg > self._explicit_project_dir > env var > cwd.
         """
-        env = self._env or os.environ
         resolved = explicit_dir or self._explicit_project_dir or os.getcwd()
         return os.path.abspath(resolved)
 

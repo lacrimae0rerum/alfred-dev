@@ -4,11 +4,7 @@ Verifies that NoOpHooksPort satisfies the HooksPort protocol and
 always allows operations (fail-open behavior).
 """
 
-import os
-import tempfile
 import unittest
-from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
 
 from alfred_core.ports import HooksPort
 from alfred_core.ports.noop import NoOpHooksPort

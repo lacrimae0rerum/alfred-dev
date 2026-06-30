@@ -12,6 +12,8 @@ extraction.
 
 from __future__ import annotations
 
+from . import ports
+
 __version__ = "0.1.0"
 
 __all__ = [
@@ -22,4 +24,5 @@ __all__ = [
     "optional_agents",
     "orchestrator",
     "config_loader",
+    "ports",
 ]
