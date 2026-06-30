@@ -1,0 +1,38 @@
+{
+  "name": "alfred-codex",
+  "version": "0.1.0",
+  "description": "Codex-native MVP of Alfred workflows with project memory, flow gates, and pragmatic orchestration guidance.",
+  "author": {
+    "name": "686f6c61"
+  },
+  "homepage": "https://alfred-dev.com",
+  "repository": "https://github.com/686f6c61/alfred-codex",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "alfred",
+    "sdlc",
+    "workflows",
+    "memory",
+    "quality-gates"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Alfred Codex",
+    "shortDescription": "Run Alfred-style software workflows in Codex.",
+    "longDescription": "Alfred Codex is an MVP Codex-native port of Alfred Dev. It provides one main skill, six workflow definitions, neutral project state paths, a lightweight memory MCP server, and validation tests without depending on Claude-only slash commands or hooks.",
+    "developerName": "686f6c61",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Reasoning",
+      "MCP"
+    ],
+    "defaultPrompt": [
+      "Use Alfred for Codex to plan this change.",
+      "Start an Alfred quick flow for this task.",
+      "Search Alfred memory for prior decisions."
+    ]
+  }
+}
