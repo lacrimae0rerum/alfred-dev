@@ -130,6 +130,13 @@ Expected behavior:
 - without project context: clean JSON-RPC error;
 - with `project_dir`: JSON-RPC result with a `.codex/alfred/memory.db` path.
 
+If Codex reports that `alfred-memory` failed during MCP startup, reinstall the
+local plugin and start a new Codex thread:
+
+```bash
+codex plugin add alfred-codex@alfred-codex-local
+```
+
 ## Known gaps
 
 - No full Alfred Dev parity.
