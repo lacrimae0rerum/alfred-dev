@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install-hermes.sh — Instala Alfred Dev como personalidad y skills en Hermes
+# install-alfred.sh — Instala Alfred Dev como personalidad y skills en Hermes
 #
 # Uso:  bash install-hermes.sh
 #

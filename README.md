@@ -8,6 +8,52 @@ Este branch porta ese ecosistema desde **Claude Code** hacia **Hermes Agent**, c
 
 ---
 
+## 🚀 Cómo se usa Alfred en Hermes
+
+### Instalación (una vez)
+
+```bash
+bash install-alfred.sh
+```
+
+Esto registra la personalidad `alfred` y los 62 skills en `~/.hermes/`. Más detalles abajo en [Instalación](#-instalación).
+
+### Activar Alfred
+
+En cualquier sesión de Hermes, escribes:
+
+```
+/personality alfred
+```
+
+### Usarlo
+
+No hay comandos `/alfred-dev:*` como en Claude Code. Simplemente le pides lo que necesitas y Alfred orquesta a los agentes adecuados:
+
+```
+# Feature completa
+"Quiero añadir autenticación OAuth2 con Google. Flujo feature."
+
+# Investigación rápida
+"Haz un spike de la API de Stripe para pagos recurrentes."
+
+# Bug fix
+"Los tests de login están fallando. Flujo fix."
+
+# Cambio pequeño
+"Cambia el color del botón a azul. Flujo quick."
+
+# Auditoría
+"Haz una auditoría de seguridad del proyecto actual."
+
+# Discutir antes de implementar
+"Necesito discutir la arquitectura para el módulo de pagos."
+```
+
+Alfred decide qué agente invocar, en qué orden, y respeta los quality gates entre fases.
+
+---
+
 ## ⚡ Instalación
 
 ```bash
@@ -15,7 +61,7 @@ Este branch porta ese ecosistema desde **Claude Code** hacia **Hermes Agent**, c
 git clone -b port/hermes https://github.com/lacrimae0rerum/alfred-dev.git
 
 # 2. Ejecutar el instalador (una vez)
-bash alfred-dev/install-hermes.sh
+bash alfred-dev/install-alfred.sh
 
 # 3. En cualquier sesión de Hermes, activar Alfred
 /personality alfred
@@ -114,7 +160,7 @@ docs/                         # Documentación del port
 ├── 2026-06-28-auditoria-portabilidad.md  # Auditoría de portabilidad
 ├── codebase-map-coupling.md  # Mapa de acoplamiento
 └── prd/                      # PRDs del proyecto
-install-hermes.sh             # Instalador para Hermes
+install-alfred.sh             # Instalador para Hermes
 ```
 
 ---
