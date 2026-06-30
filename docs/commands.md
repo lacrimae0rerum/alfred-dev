@@ -1,13 +1,15 @@
 # Prompts operativos
 
 Codex no carga slash commands namespaced desde plugins del mismo modo que
-Alfred Dev original. En esta rama, cada contrato de comando se publica como
-custom prompt instalable en `~/.codex/prompts/`.
+Alfred Dev original. En esta rama, la entrada principal se instala como skill
+personal directo `/alfred:dev`; cada contrato especializado se publica tambien
+como custom prompt en `~/.codex/prompts/`.
 
 ## Entrada principal
 
-| Prompt | Uso |
+| Comando | Uso |
 |---|---|
+| `/alfred:dev` | Entrada directa principal. Enruta al flujo o vista correcta sin obligar al usuario a elegir a mano. |
 | `/prompts:alfred` | Entrada contextual. Decide si toca mapear, discutir, continuar, verificar o abrir un flujo. |
 
 ## Flujos principales

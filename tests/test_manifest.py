@@ -84,6 +84,13 @@ class ManifestTest(unittest.TestCase):
         self.assertEqual(set(hooks), {"hooks"})
         self.assertIn("SessionStart", hooks["hooks"])
 
+    def test_direct_alfred_dev_alias_is_packaged_for_installer(self) -> None:
+        alias = ROOT / "aliases" / "alfred-colon-dev" / "SKILL.md"
+        self.assertTrue(alias.is_file())
+        text = alias.read_text(encoding="utf-8")
+        self.assertIn("name: alfred:dev", text)
+        self.assertIn("/alfred:dev", text)
+
 
 if __name__ == "__main__":
     unittest.main()

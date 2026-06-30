@@ -22,13 +22,15 @@ El instalador hace cuatro cosas:
 
 1. copia `prompts/*.md` a `~/.codex/prompts/`;
 2. copia `.codex/agents/*.toml` a `~/.codex/agents/`;
-3. registra este directorio como marketplace local con `codex plugin marketplace add`;
-4. instala `alfred-codex@alfred-codex-local` con `codex plugin add`.
+3. instala el alias personal directo `/alfred:dev` en `~/.codex/skills/`;
+4. registra este directorio como marketplace local con `codex plugin marketplace add`;
+5. instala `alfred-codex@alfred-codex-local` con `codex plugin add`.
 
 Despues abre una sesion nueva de Codex en el proyecto objetivo. Los prompts
 quedan disponibles como:
 
 ```text
+/alfred:dev
 /prompts:alfred
 /prompts:alfred-dev-feature
 /prompts:alfred-dev-quick
@@ -38,9 +40,8 @@ quedan disponibles como:
 /prompts:alfred-dev-ship
 ```
 
-Codex no expone comandos slash arbitrarios de plugin como `/alfred-dev:feature`.
-En este port esos contratos viven en `prompts/` y se invocan con
-`/prompts:<nombre>`.
+La entrada principal es `/alfred:dev`. Los contratos especializados viven en
+`prompts/` y se invocan con `/prompts:<nombre>`.
 
 ## Verificacion
 

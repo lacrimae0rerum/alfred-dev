@@ -13,8 +13,8 @@ Codex surfaces allow:
 - **Skills:** the 62 Alfred skills are flattened into Codex-compatible skill
   packages under `skills/`.
 - **Commands:** Claude slash commands are ported to Codex custom prompts under
-  `prompts/`. Codex exposes them as `/prompts:...`, not as bare
-  `/alfred-dev:...` commands.
+  `prompts/`. The installer also creates the direct personal alias
+  `/alfred:dev` for the main Alfred entrypoint.
 - **Hooks:** Alfred lifecycle hooks are bundled under `hooks/hooks.json` using
   Codex hook events.
 - **Memory:** `alfred-memory` is exposed as a bundled MCP server.
@@ -34,16 +34,22 @@ The installer:
 - installs `alfred-codex@alfred-codex-local`;
 - copies Alfred custom prompts into `~/.codex/prompts`;
 - copies Alfred custom agents into `~/.codex/agents`;
+- installs the direct personal skill alias `/alfred:dev`;
 - refreshes the plugin cache.
 
 After installation, start a new Codex session.
 
 ## Invocation
 
-Codex does not currently let a plugin publish bare custom slash commands such as
-`/alfred-dev:feature`. The Codex-supported command surface is custom prompts.
+Use `/alfred:dev` as the direct Alfred entrypoint:
 
-Use:
+```text
+/alfred:dev
+/alfred:dev crea una feature de autenticación con OAuth2
+/alfred:dev revisa el estado del proyecto y dime qué toca ahora
+```
+
+Subcommands are also available as Codex custom prompts:
 
 ```text
 /prompts:alfred
