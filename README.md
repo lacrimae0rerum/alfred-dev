@@ -1,46 +1,62 @@
-# alfred-core
+# alfred-dev → Hermes port (branch: port/hermes)
 
-Portable, host-agnostic core engine extracted from the [Alfred Dev](https://github.com/686f6c61/alfred-dev)
-Claude Code plugin. This is **phase 0** of decoupling Alfred from Claude Code so it
-can be driven by other agents/harnesses (see `docs/`).
+Branch del port de [Alfred Dev](https://github.com/686f6c61/alfred-dev) desde
+**Claude Code** hacia **Hermes Agent**. Arquitectura hexagonal: núcleo puro +
+puertos neutros + adaptador Hermes.
 
-## What this is
+## Estado del port
 
-`alfred-core` packages the ~3500 LOC of pure logic that survives any host:
+| Fase | Qué | Estado |
+|---|---|---|
+| 0 | Extraer núcleo a paquete `alfred_core` | ✅ |
+| 1 | Puerto `HostContext` (rutas) | ✅ |
+| 2 | Guards como política pura + adaptador CC | ✅ |
+| 3 | Compilador de prompts → formato neutro JSON | ✅ |
+| 4 | **Adaptador Hermes** (6 puertos) | ✅ **MVP completado** |
+| 5 | Degradaciones declaradas por host | ✅ Documentado |
 
-- **`orchestrator`** — the flow/gate state machine (feature, fix, quick, spike, ship, audit).
-- **`memory`** — SQLite persistence for decisions, commits, events, iterations (WAL, FTS5).
-- **`memory_config`** — memory configuration parsing.
-- **`secrets`** — centralized secret patterns and sanitization.
-- **`personality`** — agent catalog, voices and tone.
-- **`optional_agents`** — optional-agent registry and selection menus.
-- **`config_loader`** — project config and stack detection.
+## MVP (Hermes)
 
-It carries **no hard dependency on Claude Code**. The only residual coupling
-(path resolution under `.claude/`, and an optional fail-open import of `continuity`)
-is tracked as debt for **phase 1** (the `HostContext` port).
+El adaptador Hermes implementa 6 puertos:
+
+- **AgentRunner** → `delegate_task()` (subagentes reales)
+- **MemoryPort** → `memory()` tool
+- **HooksPort** → `CoreGuard.evaluate()` directo (sin subprocess)
+- **SkillsPort** → `skill_manage()` tool
+- **HostContextPort** → rutas relativas a `.hermes`
+- **ToolRegistry** → mapeo Bash→terminal, Agent→delegation, Edit→file
+
+## Instalación
+
+```bash
+# Una vez, desde cualquier directorio:
+bash install-hermes.sh
+
+# Luego en cualquier sesión Hermes:
+/personality alfred
+```
+
+Esto registra la personalidad Alfred + 62 skills compilados desde el plugin original.
+
+## Verificación
+
+```bash
+uv run pytest -q        # 457 tests, 0 fallos
+uv run ruff check src tests   # 0 errores
+```
 
 ## Layout
 
 ```
-src/alfred_core/      # the package
-tests/                # regression suite (carried over + new state-machine tests)
-docs/                 # coupling map, portability audit, PRD
+src/alfred_core/          # núcleo portable
+src/alfred_core/ports/    # 6 puertos + adaptador Hermes + test doubles
+tests/                    # suite de regresión
+hooks/                    # hooks originales de CC (referencia)
+docs/                     # handover, PRDs, auditoría de portabilidad
+install-hermes.sh         # instalador para Hermes
 ```
 
-## Develop
+## Rama principal
 
-Requires Python 3.12+ and [`uv`](https://github.com/astral-sh/uv).
-
-```bash
-uv venv
-uv pip install -e ".[dev]"
-uv run pytest          # regression gate
-uv run ruff check src tests
-```
-
-## Status
-
-Phase 0: extraction + regression gate. No public API stability guarantees yet.
-See `docs/prd/0001-extraccion-alfred-core.md` for scope and acceptance criteria,
-and `docs/2026-06-28-auditoria-portabilidad.md` for the full port plan.
+El plugin original de Alfred Dev para Claude Code vive en `main` de este repo.
+Este branch (`port/hermes`) contiene el port a Hermes Agent.
