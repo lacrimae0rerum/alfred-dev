@@ -1,4 +1,6 @@
 .DS_Store
 __pycache__/
 *.pyc
-.codex/
+.codex/alfred/
+.codex/*.db
+.codex/*.log

@@ -1,12 +1,12 @@
 {
   "name": "alfred-codex",
-  "version": "0.1.0",
-  "description": "Codex-native MVP of Alfred workflows with project memory, flow gates, and pragmatic orchestration guidance.",
+  "version": "0.6.1+codex.1",
+  "description": "Codex-native port of Alfred Dev: specialist agents, workflow prompts, quality gates, hooks, persistent memory, and software delivery skills.",
   "author": {
     "name": "686f6c61"
   },
   "homepage": "https://alfred-dev.com",
-  "repository": "https://github.com/686f6c61/alfred-codex",
+  "repository": "https://github.com/lacrimae0rerum/alfred-dev/tree/port/codex",
   "license": "MIT",
   "keywords": [
     "codex",
@@ -19,20 +19,22 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Alfred Codex",
-    "shortDescription": "Run Alfred-style software workflows in Codex.",
-    "longDescription": "Alfred Codex is an MVP Codex-native port of Alfred Dev. It provides one main skill, six workflow definitions, neutral project state paths, a lightweight memory MCP server, and validation tests without depending on Claude-only slash commands or hooks.",
+    "displayName": "Alfred Dev for Codex",
+    "shortDescription": "Run Alfred Dev software delivery workflows in Codex.",
+    "longDescription": "Alfred Dev for Codex ports the Alfred workflow system to Codex: 19 specialist agents, 62 skills, 6 gated flows, project memory through MCP, lifecycle hooks, visual direction support, evidence checks, autopilot rules, and European compliance guidance.",
     "developerName": "686f6c61",
     "category": "Productivity",
     "capabilities": [
       "Write",
       "Reasoning",
-      "MCP"
+      "MCP",
+      "Hooks",
+      "Subagents"
     ],
     "defaultPrompt": [
-      "Use Alfred for Codex to plan this change.",
+      "Use Alfred to run a feature flow for this change.",
       "Start an Alfred quick flow for this task.",
-      "Search Alfred memory for prior decisions."
+      "Ask Alfred to audit this project with specialist agents."
     ]
   }
 }

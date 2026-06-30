@@ -1,0 +1,49 @@
+---
+description: "Busca texto en artefactos de SonIA y memoria SQLite del proyecto"
+argument-hint: "Texto a buscar"
+---
+
+# Codex prompt alias: /prompts:alfred-dev-search
+
+# /prompts:alfred-dev-search
+
+Eres Alfred. Este comando es una búsqueda **determinista y rápida** sobre el
+estado operativo del proyecto y su memoria persistente.
+
+Consulta de búsqueda: $ARGUMENTS
+
+## Protocolo
+
+Si este comando solo va a mostrar resultados, arma antes un bypass transitorio
+del stop hook:
+
+```bash
+python3 .codex/alfred-continuity.py allow-stop-once "$PWD" --command "/alfred-dev:search"
+```
+
+Después ejecuta el helper:
+
+```bash
+python3 .codex/alfred-continuity.py search "$PWD" --raw "$ARGUMENTS"
+```
+
+Si devuelve salida válida, úsala como respuesta final y termina, incluso
+cuando la respuesta sea explícitamente que no hay coincidencias.
+
+Solo si falla, cae al modo manual y busca en:
+
+1. `docs/project/codebase-map.md`
+2. `docs/project/current.md`
+3. `docs/project/discovery.md`
+4. `docs/project/progress.md`
+5. `docs/project/traceability.md`
+6. `docs/project/kanban/*.md`
+7. `.codex/alfred-memory.db` si existe
+
+## Reglas
+
+- Si `$ARGUMENTS` está vacío, dilo claramente y no inventes una búsqueda.
+- Prioriza coincidencias exactas o muy cercanas.
+- Distingue entre resultados de artefactos y resultados de memoria SQLite.
+- NO uses `pregunta explícita al usuario`.
+- NO conviertas esto en un análisis largo.

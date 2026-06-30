@@ -62,7 +62,7 @@ def _now() -> str:
 
 
 def resolve_memory_db_path(project_dir: str | Path | None = None) -> Path:
-    """Resolve the memory DB path without using Claude-specific defaults."""
+    """Resolve the memory DB path without using Codex-specific defaults."""
     return memory_path(project_dir)
 
 

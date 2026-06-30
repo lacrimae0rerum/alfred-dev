@@ -23,7 +23,6 @@ class PublicDocsTest(unittest.TestCase):
             "fedi" + "rosan",
             "AUTO" + "EXEC_" + "PRO" + "MPT",
             "BITA" + "CORA",
-            "Hand" + "off",
             "MVP " + "Loop " + "Hand" + "off",
             "/goal Build " + "Alfred",
         ]
@@ -32,23 +31,21 @@ class PublicDocsTest(unittest.TestCase):
                 self.assertNotIn(fragment, combined)
 
     def test_docs_do_not_present_claude_install_as_codex_install(self) -> None:
-        docs_text = "\n".join(path.read_text(encoding="utf-8") for path in (ROOT / "docs").glob("*.md"))
+        docs_text = "\n".join(path.read_text(encoding="utf-8") for path in (ROOT / "docs").rglob("*.md"))
         forbidden_install_fragments = [
             "~/.claude",
             "claude -p",
-            "install.sh",
-            "install.ps1",
+            "CLAUDE_PLUGIN_ROOT",
         ]
         for fragment in forbidden_install_fragments:
             with self.subTest(fragment=fragment):
                 self.assertNotIn(fragment, docs_text)
 
     def test_skill_contract_is_codex_native(self) -> None:
-        text = (ROOT / "skills" / "alfred-for-codex" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("name: alfred-for-codex", text)
-        self.assertIn(".codex/alfred/", text)
-        self.assertIn("Never invoke or promise Claude slash commands", text)
-        self.assertNotIn("description: \"Alias global /alfred", text)
+        text = (ROOT / "skills" / "alfred" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("name: alfred", text)
+        self.assertIn(".codex/", text)
+        self.assertIn("subagent", text)
         self.assertNotIn("user-invocable: false", text)
 
 

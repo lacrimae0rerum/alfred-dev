@@ -14,7 +14,7 @@ class ManifestTest(unittest.TestCase):
     def test_plugin_manifest_is_valid_shape(self) -> None:
         payload = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(payload["name"], "alfred-codex")
-        self.assertEqual(payload["version"], "0.1.0")
+        self.assertEqual(payload["version"], "0.6.1+codex.1")
         self.assertEqual(payload["skills"], "./skills/")
         self.assertEqual(payload["mcpServers"], "./.mcp.json")
         self.assertIn("author", payload)
@@ -24,7 +24,7 @@ class ManifestTest(unittest.TestCase):
         self.assertNotIn("[TODO:", json.dumps(payload))
 
     def test_main_skill_and_mcp_files_are_discoverable(self) -> None:
-        skill = ROOT / "skills" / "alfred-for-codex" / "SKILL.md"
+        skill = ROOT / "skills" / "alfred" / "SKILL.md"
         mcp = ROOT / ".mcp.json"
         self.assertTrue(skill.is_file())
         self.assertTrue(mcp.is_file())
@@ -65,6 +65,14 @@ class ManifestTest(unittest.TestCase):
         self.assertEqual(entry["source"]["source"], "local")
         self.assertIn("policy", entry)
         self.assertIn("category", entry)
+
+    def test_alfred_surface_counts_match_public_contract(self) -> None:
+        self.assertEqual(len(list((ROOT / "agents").glob("*.md"))), 19)
+        self.assertEqual(len(list((ROOT / ".codex" / "agents").glob("*.toml"))), 19)
+        self.assertEqual(len(list((ROOT / "skills").glob("*/SKILL.md"))), 62)
+        self.assertEqual(len(list((ROOT / "prompts").glob("*.md"))), 26)
+        self.assertEqual(len(list((ROOT / "templates").glob("*.md"))), 7)
+        self.assertTrue((ROOT / "hooks" / "hooks.json").is_file())
 
 
 if __name__ == "__main__":

@@ -1,150 +1,144 @@
-# Alfred Codex
+# Alfred Dev for Codex
 
-Alfred Codex is a Codex-native MVP port of Alfred Dev. It provides one main
-Codex skill, six Alfred-style software delivery flows, neutral project state
-paths, and a lightweight memory MCP server.
+Codex-native port of Alfred Dev: an automated software engineering workflow
+system with 19 specialist agents, 62 skills across 15 domains, persistent
+project memory, gated delivery flows, lifecycle hooks, visual direction support,
+autopilot rules, and European compliance guidance.
 
-This is not full parity with Alfred Dev. Claude slash commands, Claude hooks,
-`${CLAUDE_PLUGIN_ROOT}`, Claude `Agent` tool assumptions, Selina's full visual
-workflow, and SonarQube automation are intentionally out of scope for this MVP.
+This branch targets Codex. It preserves Alfred Dev's product behavior as far as
+Codex surfaces allow:
 
-## What is included
+- **Agents:** 19 Alfred roles are available as Codex custom agents under
+  `.codex/agents/`.
+- **Skills:** the 62 Alfred skills are flattened into Codex-compatible skill
+  packages under `skills/`.
+- **Commands:** Claude slash commands are ported to Codex custom prompts under
+  `prompts/`. Codex exposes them as `/prompts:...`, not as bare
+  `/alfred-dev:...` commands.
+- **Hooks:** Alfred lifecycle hooks are bundled under `hooks/hooks.json` using
+  Codex hook events.
+- **Memory:** `alfred-memory` is exposed as a bundled MCP server.
+- **State:** project state is written under `.codex/`, not `.claude/`.
 
-- Codex plugin manifest: `.codex-plugin/plugin.json`
-- Main skill: `skills/alfred-for-codex/SKILL.md`
-- Runtime helpers and core logic: `alfred_core/`
-- Memory MCP server: `mcp/memory_server.py`
-- Flow helper CLI: `scripts/alfred_flow.py`
-- Validation tests: `tests/`
-- Project docs: `docs/`
+## Install Locally
 
-Supported MVP flows:
-
-- `feature`
-- `quick`
-- `fix`
-- `spike`
-- `audit`
-- `ship`
-
-## Validate locally
-
-Run from the repository root:
+From this repository:
 
 ```bash
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests -v
-PYTHONDONTWRITEBYTECODE=1 python3 -B "$CODEX_HOME/skills/.system/plugin-creator/scripts/validate_plugin.py" .
-PYTHONDONTWRITEBYTECODE=1 python3 -B "$CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py" skills/alfred-for-codex
+bash ./install.sh
 ```
 
-Expected result:
+The installer:
 
-- `Ran 24 tests ... OK`
-- `Plugin validation passed`
-- `Skill is valid!`
+- registers this repo as a local Codex marketplace;
+- installs `alfred-codex@alfred-codex-local`;
+- copies Alfred custom prompts into `~/.codex/prompts`;
+- copies Alfred custom agents into `~/.codex/agents`;
+- refreshes the plugin cache.
 
-## Install in Codex App
+After installation, start a new Codex session.
 
-This repo is used as a standalone local marketplace.
+## Invocation
 
-```bash
-codex plugin marketplace add .
-codex plugin add alfred-codex@alfred-codex-local
-codex plugin list
-codex app .
-```
+Codex does not currently let a plugin publish bare custom slash commands such as
+`/alfred-dev:feature`. The Codex-supported command surface is custom prompts.
 
-Expected `codex plugin list` evidence:
+Use:
 
 ```text
-Marketplace `alfred-codex-local`
-<repo>/.agents/plugins/marketplace.json
-
-alfred-codex@alfred-codex-local  installed, enabled  0.1.0  <repo>
+/prompts:alfred
+/prompts:alfred-dev-feature sistema de autenticación con OAuth2
+/prompts:alfred-dev-quick cambio pequeño y acotado
+/prompts:alfred-dev-fix el endpoint de login devuelve 500
+/prompts:alfred-dev-spike evaluar cola de eventos
+/prompts:alfred-dev-audit
+/prompts:alfred-dev-ship
 ```
 
-## Use the skill
-
-After installation, start a new Codex thread so the plugin cache is loaded.
-Ask for Alfred explicitly, for example:
+You can also invoke the installed skill directly in natural language:
 
 ```text
-Use Alfred for Codex to plan this change.
+Use Alfred to run a feature flow for this change.
+Ask Alfred to audit this project with specialist agents.
 Start an Alfred quick flow for this task.
-Search Alfred memory for prior decisions.
 ```
 
-The skill routes requests to the smallest useful flow and uses Codex-native
-tools. It does not expose Claude slash commands.
+## Team
 
-## Flow helper
+Core agents:
 
-Inspect or start flow state locally:
+- `alfred`
+- `project-manager`
+- `product-owner`
+- `selina`
+- `architect`
+- `senior-dev`
+- `security-officer`
+- `qa-engineer`
+- `devops-engineer`
+- `tech-writer`
 
-```bash
-python3 scripts/alfred_flow.py list
-python3 scripts/alfred_flow.py show quick
-python3 scripts/alfred_flow.py start quick "Small bounded change" --project-dir /path/to/project
-```
+Optional agents:
 
-State is written under:
+- `data-engineer`
+- `ux-reviewer`
+- `performance-engineer`
+- `github-manager`
+- `seo-specialist`
+- `copywriter`
+- `librarian`
+- `i18n-specialist`
+- `lucius`
 
-```text
-<project>/.codex/alfred/state.json
-```
+## Flows
+
+Alfred keeps the six delivery flows:
+
+- `feature`: product, conditional visual style, architecture, development,
+  quality, documentation, delivery.
+- `quick`: scoped implementation and focused validation.
+- `fix`: diagnosis, correction, regression validation.
+- `spike`: exploration and conclusions.
+- `audit`: parallel quality, security, architecture, and docs review.
+- `ship`: final audit, docs, packaging, deployment gate.
+
+Autopilot may auto-approve user gates, but it does not bypass tests, security,
+evidence, or explicit deployment confirmation.
 
 ## Memory MCP
 
-The MCP server stores project memory under:
+The bundled MCP server is `alfred-memory`. It stores project memory under:
 
 ```text
-<project>/.codex/alfred/memory.db
+<project>/.codex/alfred-memory.db
 ```
 
-Pass `project_dir` in MCP tool arguments when the active project is known. If
-the server is launched from the plugin repository without project context, it
-refuses tool calls instead of writing memory inside the plugin.
+The MCP launcher is portable: it works when Codex starts the server from the
+user home directory, the plugin cache, or a local development checkout.
 
-Smoke test:
+## Validate
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -B - <<'PY'
-import json, subprocess, tempfile
-
-req = {"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"memory_stats","arguments":{}}}
-p = subprocess.run(["python3","-B","mcp/memory_server.py"], input=json.dumps(req)+"\n", text=True, capture_output=True, timeout=5)
-print("no_context_returncode", p.returncode)
-print(p.stdout.strip())
-
-with tempfile.TemporaryDirectory() as tmp:
-    req = {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"memory_stats","arguments":{"project_dir":tmp}}}
-    p = subprocess.run(["python3","-B","mcp/memory_server.py"], input=json.dumps(req)+"\n", text=True, capture_output=True, timeout=5)
-    print("with_context_returncode", p.returncode)
-    print(p.stdout.strip())
-PY
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests -v
+PYTHONDONTWRITEBYTECODE=1 python3 -B "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" .
 ```
 
-Expected behavior:
-
-- without project context: clean JSON-RPC error;
-- with `project_dir`: JSON-RPC result with a `.codex/alfred/memory.db` path.
-
-If Codex reports that `alfred-memory` failed during MCP startup, reinstall the
-local plugin and start a new Codex thread:
+For all inherited Alfred Dev tests, install `pytest` in your environment and run:
 
 ```bash
-codex plugin add alfred-codex@alfred-codex-local
+python3 -m pytest tests/ -v
 ```
 
-## Known gaps
+## Known Codex Differences
 
-- No full Alfred Dev parity.
-- No Claude slash commands.
-- No Claude hooks.
-- No Claude `Agent` tool assumptions.
-- No full Selina visual workflow.
-- No SonarQube/Docker automation.
-- Memory MCP is intentionally minimal.
+- Bare `/alfred-dev:*` slash commands are not a plugin-distributed Codex
+  surface. They are available as `/prompts:alfred-dev-*` custom prompts after
+  running `install.sh`.
+- Codex subagents are explicit: Alfred asks Codex to spawn named subagents
+  instead of relying on Claude's `Agent` tool.
+- Hook handlers are command hooks only; prompt/agent hook handlers parsed by
+  Codex are not relied upon.
+- Project state and memory use `.codex/` paths.
 
-See `docs/BUGS.md` and `docs/ROADMAP.md` for current gaps and next steps.
+Alfred Dev remains an independent open-source project. This Codex port is not
+affiliated with or endorsed by OpenAI.

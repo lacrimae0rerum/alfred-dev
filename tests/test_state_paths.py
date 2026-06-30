@@ -13,9 +13,9 @@ class StatePathTest(unittest.TestCase):
     def test_paths_are_codex_neutral(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp).resolve()
-            self.assertEqual(state_root(root), root / ".codex" / "alfred")
-            self.assertEqual(state_path(root), root / ".codex" / "alfred" / "state.json")
-            self.assertEqual(memory_path(root), root / ".codex" / "alfred" / "memory.db")
+            self.assertEqual(state_root(root), root / ".codex")
+            self.assertEqual(state_path(root), root / ".codex" / "alfred-dev-state.json")
+            self.assertEqual(memory_path(root), root / ".codex" / "alfred-memory.db")
             self.assertTrue(is_codex_neutral_path(state_path(root)))
             self.assertFalse(is_codex_neutral_path(root / ".claude" / "alfred-dev-state.json"))
 

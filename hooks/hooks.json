@@ -1,0 +1,249 @@
+{
+  "description": "Alfred Dev - hooks del ciclo de vida del plugin",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/session-bootstrap.sh'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/session-start.sh'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptExpansion": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/stop-hook.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/prefetch-finish-guard.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/secret-guard.sh'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/dangerous-command-guard.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/sensitive-read-guard.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/memory-compact.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/quality-gate.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/evidence-guard.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/dependency-watch.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/spelling-guard.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -c 'import os, runpy, sys, subprocess\nfrom pathlib import Path\nrel = '\"'\"'hooks/activity-capture.py'\"'\"'\ncandidates = []\noverride = os.environ.get('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"')\nif override:\n    candidates.append(Path(override) / rel)\ncandidates.append(Path.cwd() / rel)\ncache = Path(os.environ.get('\"'\"'CODEX_HOME'\"'\"', Path.home() / '\"'\"'.codex'\"'\"')) / '\"'\"'plugins'\"'\"' / '\"'\"'cache'\"'\"'\ncandidates.extend(sorted(cache.glob('\"'\"'*/alfred-codex/*/'\"'\"' + rel), reverse=True))\nfor hook in candidates:\n    if hook.is_file():\n        root = hook.parents[len(Path(rel).parts)-1]\n        os.environ.setdefault('\"'\"'ALFRED_CODEX_PLUGIN_ROOT'\"'\"', str(root))\n        if hook.suffix == '\"'\"'.sh'\"'\"':\n            raise SystemExit(subprocess.call(['\"'\"'bash'\"'\"', str(hook)]))\n        sys.path.insert(0, str(root))\n        runpy.run_path(str(hook), run_name='\"'\"'__main__'\"'\"')\n        raise SystemExit(0)\nraise SystemExit('\"'\"'Alfred Codex hook not found: '\"'\"' + rel)'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
