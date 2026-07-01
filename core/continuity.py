@@ -849,23 +849,24 @@ def _build_kanban_task(
 
 
 def _render_kanban_task(task: Dict[str, Any]) -> str:
-    lines = [f"### {_task_reference(task)}", ""]
+    lines = [f"### {_public_codex_text(_task_reference(task))}", ""]
     task_type = _effective_task_type(task)
     if task_type != "generic":
         lines.append(f"- **Tipo:** {task_type}")
     if task.get("agent"):
-        lines.append(f"- **Agente:** {task['agent']}")
+        lines.append(f"- **Agente:** {_public_codex_text(task['agent'])}")
     if task.get("criteria"):
-        lines.append(f"- **Criterios:** {', '.join(task['criteria'])}")
+        criteria = [_public_codex_text(item) for item in task["criteria"]]
+        lines.append(f"- **Criterios:** {', '.join(criteria)}")
     if task.get("dependencies"):
-        lines.append(f"- **Dependencias:** {task['dependencies']}")
+        lines.append(f"- **Dependencias:** {_public_codex_text(task['dependencies'])}")
     if task.get("notes"):
-        lines.append(f"- **Notas:** {task['notes']}")
+        lines.append(f"- **Notas:** {_public_codex_text(task['notes'])}")
     if task.get("evidence"):
-        lines.append(f"- **Evidencia:** {task['evidence']}")
+        lines.append(f"- **Evidencia:** {_public_codex_text(task['evidence'])}")
     body = (task.get("body") or "").strip()
     if body:
-        lines.extend(["", body])
+        lines.extend(["", _public_codex_text(body)])
     return "\n".join(lines).rstrip()
 
 
@@ -1152,8 +1153,8 @@ def _merge_task_notes(existing_notes: str, extra_note: str) -> str:
 def _verification_task_title(description: str) -> str:
     cleaned = " ".join((description or "").split()).strip()
     if not cleaned:
-        return "Validar último flujo completado con /alfred-dev:verify."
-    return f"Validar '{cleaned}' con /alfred-dev:verify."
+        return "Validar último flujo completado con $alfred-dev:verify."
+    return f"Validar '{cleaned}' con $alfred-dev:verify."
 
 
 def _ensure_verification_task(
@@ -1169,7 +1170,7 @@ def _ensure_verification_task(
         agent="alfred:verify",
         notes=(
             f"Validación manual pendiente del flujo '{command}'. "
-            "Cerrar con /alfred-dev:verify."
+            "Cerrar con $alfred-dev:verify."
         ),
         task_type="verify",
     )
@@ -2318,11 +2319,11 @@ def sync_session_state_to_operational_docs(
     )
 
     with open(current_path, "w", encoding="utf-8") as fh:
-        fh.write(render_session_current_markdown(synced, uat=uat, board=board))
+        fh.write(_public_codex_text(render_session_current_markdown(synced, uat=uat, board=board)))
     with open(progress_path, "w", encoding="utf-8") as fh:
-        fh.write(render_session_progress_markdown(synced, board=board, uat=uat))
+        fh.write(_public_codex_text(render_session_progress_markdown(synced, board=board, uat=uat)))
     with open(traceability_path, "w", encoding="utf-8") as fh:
-        fh.write(render_session_traceability_markdown(synced, uat=uat, board=board))
+        fh.write(_public_codex_text(render_session_traceability_markdown(synced, uat=uat, board=board)))
 
     return synced
 
@@ -4073,16 +4074,20 @@ def sync_project_to_github(project_dir: str, raw_request: str = "") -> Dict[str,
     sync_md_path = _project_path(project_dir, GITHUB_SYNC_MD_RELATIVE_PATH)
     os.makedirs(os.path.dirname(sync_md_path), exist_ok=True)
     with open(sync_md_path, "w", encoding="utf-8") as fh:
-        fh.write(render_github_sync_markdown({
-            "repo": repo,
-            "board_issue": board_issue,
-            "tasks": synced_tasks,
-            "skipped": skipped,
-            "internal_omitted": internal_omitted,
-            "retired": retired,
-            "remote_drift": remote_drift,
-            "next_action": next_action,
-        }))
+        fh.write(
+            _public_codex_text(
+                render_github_sync_markdown({
+                    "repo": repo,
+                    "board_issue": board_issue,
+                    "tasks": synced_tasks,
+                    "skipped": skipped,
+                    "internal_omitted": internal_omitted,
+                    "retired": retired,
+                    "remote_drift": remote_drift,
+                    "next_action": next_action,
+                })
+            )
+        )
 
     state = load_state(_project_path(project_dir, STATE_RELATIVE_PATH))
     bypass_path = None
@@ -4418,6 +4423,7 @@ def _append_helper_list_artifact(
     path = _project_path(project_dir, relative_path)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     existing_markdown = _read_text_if_exists(project_dir, relative_path)
+    items = [_public_codex_text(item) for item in items]
 
     if relative_path in _KANBAN_RELATIVE_PATHS:
         status = next(
@@ -4663,6 +4669,16 @@ def render_quick_setup_summary(result: Dict[str, Any]) -> str:
 
 _HELPER_FIRST_FLOW_COMMANDS = frozenset({"feature", "fix", "spike", "ship", "audit"})
 _LUCIUS_SCOPES = frozenset({"all", "security", "tests", "architecture", "performance"})
+
+
+def _public_codex_text(text: str) -> str:
+    """Normaliza invocaciones heredadas de Claude a la superficie pública Codex."""
+    normalized = re.sub(r"(?<![\w$])/alfred-dev:", "$alfred-dev:", str(text))
+    return re.sub(r"(?<![\w$])/alfred(?![-:\w])", "$alfred-dev:alfred", normalized)
+
+
+def _print_public(text: str, *, file=None) -> None:
+    print(_public_codex_text(text), file=file or sys.stdout)
 
 
 def _default_flow_description(command: str) -> str:
@@ -5077,11 +5093,11 @@ def start_flow_session(project_dir: str, command: str, raw_request: str = "") ->
         session["sonarqube_autorizado"] = sonarqube_preflight.get("sonarqube_autorizado", False)
 
     with open(_project_path(project_dir, CURRENT_RELATIVE_PATH), "w", encoding="utf-8") as fh:
-        fh.write(render_flow_start_current_markdown(result))
+        fh.write(_public_codex_text(render_flow_start_current_markdown(result)))
     with open(_project_path(project_dir, PROGRESS_MD_RELATIVE_PATH), "w", encoding="utf-8") as fh:
-        fh.write(render_flow_start_progress_markdown(result))
+        fh.write(_public_codex_text(render_flow_start_progress_markdown(result)))
     with open(_project_path(project_dir, TRACEABILITY_MD_RELATIVE_PATH), "w", encoding="utf-8") as fh:
-        fh.write(render_flow_start_traceability_markdown(result))
+        fh.write(_public_codex_text(render_flow_start_traceability_markdown(result)))
 
     active_task = _ensure_session_execution_task(project_dir, session)
     session["kanban_task_id"] = active_task.get("id", "")
@@ -5204,10 +5220,10 @@ def write_codebase_map_files(project_dir: str, raw_request: str = "") -> Dict[st
     current_path = _project_path(project_dir, CURRENT_RELATIVE_PATH)
 
     with open(codebase_map_path, "w", encoding="utf-8") as fh:
-        fh.write(render_codebase_map_markdown(record))
+        fh.write(_public_codex_text(render_codebase_map_markdown(record)))
 
     with open(current_path, "w", encoding="utf-8") as fh:
-        fh.write(render_codebase_current_markdown(record))
+        fh.write(_public_codex_text(render_codebase_current_markdown(record)))
 
     stack_summary = ", ".join(record["stack_details"])
     seeded_artifacts = _seed_helper_operational_artifacts(
@@ -5543,7 +5559,7 @@ def write_uat_files(project_dir: str, raw_request: str = "") -> Dict[str, Any]:
         json.dump(record, fh, indent=2, ensure_ascii=False)
 
     with open(markdown_path, "w", encoding="utf-8") as fh:
-        fh.write(render_uat_markdown(record))
+        fh.write(_public_codex_text(render_uat_markdown(record)))
 
     kanban_sync = _sync_kanban_after_verify(project_dir, target, record)
     if target.get("source") == "completed-session":
@@ -6388,10 +6404,10 @@ def write_discovery_files(project_dir: str, raw_request: str = "") -> Dict[str, 
     current_path = _project_path(project_dir, CURRENT_RELATIVE_PATH)
 
     with open(discovery_path, "w", encoding="utf-8") as fh:
-        fh.write(render_discovery_markdown(record))
+        fh.write(_public_codex_text(render_discovery_markdown(record)))
 
     with open(current_path, "w", encoding="utf-8") as fh:
-        fh.write(render_discovery_current_markdown(record))
+        fh.write(_public_codex_text(render_discovery_current_markdown(record)))
 
     seeded_artifacts = _seed_helper_operational_artifacts(
         project_dir,
@@ -6505,9 +6521,9 @@ def start_quick_session(project_dir: str, raw_request: str = "") -> Dict[str, An
         "needs_codebase_map": needs_codebase_map(project_dir),
     }
     with open(_project_path(project_dir, CURRENT_RELATIVE_PATH), "w", encoding="utf-8") as fh:
-        fh.write(render_quick_current_markdown(quick_record))
+        fh.write(_public_codex_text(render_quick_current_markdown(quick_record)))
     with open(_project_path(project_dir, PROGRESS_MD_RELATIVE_PATH), "w", encoding="utf-8") as fh:
-        fh.write(render_quick_progress_markdown(quick_record))
+        fh.write(_public_codex_text(render_quick_progress_markdown(quick_record)))
 
     seeded_artifacts = _seed_helper_operational_artifacts(
         project_dir,
@@ -6804,7 +6820,7 @@ def save_prefetch_result(
     """Persiste un prefetch reciente para que el comando pueda consumirlo."""
     source_command = payload.get("source_command")
     prefetched_command = payload.get("prefetched_command")
-    response_text = render_prefetch_response(payload)
+    response_text = _public_codex_text(render_prefetch_response(payload))
 
     if not isinstance(source_command, str) or not source_command.strip():
         return None
@@ -6986,7 +7002,7 @@ def write_handoff_files(project_dir: str) -> Optional[Dict[str, str]]:
 
     handoff_json_path = save_handoff(project_dir, handoff)
     with open(handoff_md_path, "w", encoding="utf-8") as fh:
-        fh.write(render_handoff_markdown(handoff))
+        fh.write(_public_codex_text(render_handoff_markdown(handoff)))
 
     return {
         "json_path": handoff_json_path,
@@ -7292,13 +7308,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.as_json:
             print(json.dumps(suggestion, ensure_ascii=False))
         else:
-            print(render_next_markdown(suggestion))
+            _print_public(render_next_markdown(suggestion))
         return 0
 
     if args.command == "write-handoff":
         result = write_handoff_files(project_dir)
         if result is None:
-            print("No hay sesión activa para generar handoff.", file=sys.stderr)
+            _print_public("No hay sesión activa para generar handoff.", file=sys.stderr)
             return 1
         print(json.dumps(result, ensure_ascii=False))
         return 0
@@ -7306,30 +7322,30 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.command == "pause":
         result = pause_session(project_dir)
         if result is None:
-            print("No hay sesión activa para pausar.", file=sys.stderr)
+            _print_public("No hay sesión activa para pausar.", file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_pause_markdown(result))
+            _print_public(render_pause_markdown(result))
         return 0
 
     if args.command == "resume":
         result = resume_session(project_dir)
         if result is None:
-            print("No hay sesión pausada o activa para reanudar.", file=sys.stderr)
+            _print_public("No hay sesión pausada o activa para reanudar.", file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_resume_markdown(result))
+            _print_public(render_resume_markdown(result))
         return 0
 
     if args.command == "verify":
         try:
             result = write_uat_files(project_dir, raw_request=args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
@@ -7338,7 +7354,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             if uat is None:
                 print(json.dumps(result, ensure_ascii=False))
             else:
-                print(render_uat_markdown(uat))
+                _print_public(render_uat_markdown(uat))
         return 0
 
     if args.command == "progress":
@@ -7350,7 +7366,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.as_json:
             print(json.dumps(snapshot, ensure_ascii=False))
         else:
-            print(render_progress_markdown(snapshot))
+            _print_public(render_progress_markdown(snapshot))
         return 0
 
     if args.command == "status":
@@ -7362,23 +7378,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.as_json:
             print(json.dumps(snapshot, ensure_ascii=False))
         else:
-            print(render_status_markdown(snapshot))
+            _print_public(render_status_markdown(snapshot))
         return 0
 
     if args.command == "standup":
-        print(render_standup_markdown(build_standup_snapshot(project_dir)))
+        _print_public(render_standup_markdown(build_standup_snapshot(project_dir)))
         return 0
 
     if args.command == "blocked":
-        print(render_lane_markdown(build_lane_snapshot(project_dir, "blocked")))
+        _print_public(render_lane_markdown(build_lane_snapshot(project_dir, "blocked")))
         return 0
 
     if args.command == "in-progress":
-        print(render_lane_markdown(build_lane_snapshot(project_dir, "in-progress")))
+        _print_public(render_lane_markdown(build_lane_snapshot(project_dir, "in-progress")))
         return 0
 
     if args.command == "validate":
-        print(render_validation_markdown(validate_operational_artifacts(project_dir)))
+        _print_public(render_validation_markdown(validate_operational_artifacts(project_dir)))
         return 0
 
     if args.command == "normalize-kanban":
@@ -7386,25 +7402,25 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_normalize_kanban_markdown(result))
+            _print_public(render_normalize_kanban_markdown(result))
         return 0
 
     if args.command == "search":
         try:
             results = search_project_context(project_dir, args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
-        print(render_search_markdown(results))
+        _print_public(render_search_markdown(results))
         return 0
 
     if args.command == "sync-github":
         try:
             result = sync_project_to_github(project_dir, raw_request=args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
-        print(render_github_sync_cli_summary(result))
+        _print_public(render_github_sync_cli_summary(result))
         return 0
 
     if args.command == "memory-ui":
@@ -7417,58 +7433,58 @@ def main(argv: Optional[List[str]] = None) -> int:
                     open_browser_window=not args.no_open,
                 )
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
             if args.stop:
                 if result.get("stopped"):
-                    print(
+                    _print_public(
                         "## Memory UI detenida\n\n"
                         f"- PID: {result.get('pid', 'desconocido')}\n"
                         f"- URL previa: {result.get('url', 'desconocida')}\n"
                     )
                 else:
-                    print("La Memory UI no estaba en ejecución.\n")
+                    _print_public("La Memory UI no estaba en ejecución.\n")
             else:
-                print(render_memory_ui_markdown(result))
+                _print_public(render_memory_ui_markdown(result))
         return 0
 
     if args.command == "map-codebase":
         try:
             result = write_codebase_map_files(project_dir, raw_request=args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_codebase_map_summary(result))
+            _print_public(render_codebase_map_summary(result))
         return 0
 
     if args.command == "discuss":
         try:
             result = write_discovery_files(project_dir, raw_request=args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_discovery_summary(result))
+            _print_public(render_discovery_summary(result))
         return 0
 
     if args.command == "quick":
         try:
             result = start_quick_session(project_dir, raw_request=args.raw_request)
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_quick_setup_summary(result))
+            _print_public(render_quick_setup_summary(result))
         return 0
 
     if args.command == "lucius":
@@ -7476,7 +7492,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_lucius_summary(result))
+            _print_public(render_lucius_summary(result))
         return 0
 
     if args.command == "start-flow":
@@ -7487,19 +7503,19 @@ def main(argv: Optional[List[str]] = None) -> int:
                 raw_request=args.raw_request,
             )
         except RuntimeError as exc:
-            print(str(exc), file=sys.stderr)
+            _print_public(str(exc), file=sys.stderr)
             return 1
         if args.as_json:
             print(json.dumps(result, ensure_ascii=False))
         else:
-            print(render_flow_start_summary(result))
+            _print_public(render_flow_start_summary(result))
         return 0
 
     if args.command == "consume-prefetch":
         payload = consume_prefetch_result(project_dir, args.expected_command)
         if payload is None:
             return 1
-        print(payload.get("response_text", ""))
+        _print_public(payload.get("response_text", ""))
         return 0
 
     if args.command == "allow-stop-once":

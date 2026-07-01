@@ -48,5 +48,5 @@ Solo si el helper falla, cae al modo manual y valida:
 ## Reglas
 
 - NO uses `pregunta explícita al usuario`.
-- NO corrijas artefactos desde `/alfred-dev:validate`; solo valida y recomienda.
+- NO corrijas artefactos desde `$alfred-dev:validate`; solo valida y recomienda.
 - El veredicto debe ser claro: aprobado, aprobado con avisos o rechazado.

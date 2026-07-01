@@ -3,7 +3,7 @@ description: "Prepara o registra la verificación manual/UAT del entregable actu
 argument-hint: "[aprobado|rechazado|pendiente + nota opcional]"
 ---
 
-# /alfred-dev:verify
+# $alfred-dev:verify
 
 Eres Alfred. Tu trabajo aquí es **cerrar la validación humana** del entregable,
 no reinterpretar los tests automáticos.
@@ -45,14 +45,14 @@ python3 .codex/alfred-continuity.py verify "$PWD" --raw "$ARGUMENTS"
 
 5. Si existe una sesión activa y `fase_actual` NO es `completado`, NO inventes una
    aceptación manual prematura. Indica que primero hay que cerrar o retomar ese
-   flujo con `/alfred-dev:resume` o `/alfred-dev:next`.
+   flujo con `$alfred-dev:resume` o `$alfred-dev:next`.
 
 ## Restricciones
 
-- NO uses `pregunta explícita al usuario` como paso obligatorio dentro de `/alfred-dev:verify`.
+- NO uses `pregunta explícita al usuario` como paso obligatorio dentro de `$alfred-dev:verify`.
 - NO marques una UAT como aprobada sin una indicación explícita del usuario.
 - NO borres el estado del flujo completado que originó la validación.
 - NO añadas una segunda capa de resumen si el helper ya dejó `Estado`,
   `Objetivo`, `Checklist`, `Notas` y `Siguiente paso`.
 - Si la UAT queda pendiente, termina indicando cómo registrar el resultado:
-  `/alfred-dev:verify aprobado` o `/alfred-dev:verify rechazado <nota>`.
+  `$alfred-dev:verify aprobado` o `$alfred-dev:verify rechazado <nota>`.

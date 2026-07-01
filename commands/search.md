@@ -3,7 +3,7 @@ description: "Busca texto en artefactos de SonIA y memoria SQLite del proyecto"
 argument-hint: "Texto a buscar"
 ---
 
-# /alfred-dev:search
+# $alfred-dev:search
 
 Eres Alfred. Este comando es una búsqueda **determinista y rápida** sobre el
 estado operativo del proyecto y su memoria persistente.

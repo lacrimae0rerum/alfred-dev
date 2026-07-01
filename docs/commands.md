@@ -1,52 +1,50 @@
-# Prompts operativos
+# Comandos operativos
 
 Codex no carga slash commands namespaced desde plugins del mismo modo que
-Alfred Dev original. En esta rama, la entrada principal se instala como skill
-personal directo `/alfred:dev`; cada contrato especializado se publica tambien
-como custom prompt en `~/.codex/prompts/`.
+Alfred Dev original. En esta rama, cada contrato se publica como skill del
+plugin `alfred-dev` y se invoca con `$alfred-dev:*`.
 
 ## Entrada principal
 
 | Comando | Uso |
 |---|---|
-| `/alfred:dev` | Entrada directa principal. Enruta al flujo o vista correcta sin obligar al usuario a elegir a mano. |
-| `/prompts:alfred` | Entrada contextual. Decide si toca mapear, discutir, continuar, verificar o abrir un flujo. |
+| `$alfred-dev:alfred` | Entrada contextual. Decide si toca mapear, discutir, continuar, verificar o abrir un flujo. |
 
 ## Flujos principales
 
-| Prompt | Uso |
+| Skill | Uso |
 |---|---|
-| `/prompts:alfred-dev-feature <descripcion>` | Ciclo completo: producto, estilo visual condicional, arquitectura, desarrollo, calidad, documentacion y entrega. |
-| `/prompts:alfred-dev-quick <descripcion>` | Cambio pequeno y acotado con menos ceremonia. |
-| `/prompts:alfred-dev-fix <descripcion>` | Bugfix con diagnostico, correccion TDD y validacion. |
-| `/prompts:alfred-dev-spike <tema>` | Investigacion tecnica sin compromiso de implementacion. |
-| `/prompts:alfred-dev-audit` | Auditoria de calidad, seguridad, arquitectura y documentacion. |
-| `/prompts:alfred-dev-ship` | Preparacion de release con gates finales. |
+| `$alfred-dev:feature <descripcion>` | Ciclo completo: producto, estilo visual condicional, arquitectura, desarrollo, calidad, documentacion y entrega. |
+| `$alfred-dev:quick <descripcion>` | Cambio pequeno y acotado con menos ceremonia. |
+| `$alfred-dev:fix <descripcion>` | Bugfix con diagnostico, correccion TDD y validacion. |
+| `$alfred-dev:spike <tema>` | Investigacion tecnica sin compromiso de implementacion. |
+| `$alfred-dev:audit` | Auditoria de calidad, seguridad, arquitectura y documentacion. |
+| `$alfred-dev:ship` | Preparacion de release con gates finales. |
 
 ## Continuidad y operacion
 
-Tambien se instalan prompts para continuidad y vistas operativas:
+Tambien se publican skills para continuidad y vistas operativas:
 
-- `/prompts:alfred-dev-map-codebase`
-- `/prompts:alfred-dev-discuss`
-- `/prompts:alfred-dev-next`
-- `/prompts:alfred-dev-status`
-- `/prompts:alfred-dev-progress`
-- `/prompts:alfred-dev-pause`
-- `/prompts:alfred-dev-resume`
-- `/prompts:alfred-dev-verify`
-- `/prompts:alfred-dev-standup`
-- `/prompts:alfred-dev-blocked`
-- `/prompts:alfred-dev-in-progress`
-- `/prompts:alfred-dev-validate`
-- `/prompts:alfred-dev-search`
-- `/prompts:alfred-dev-sync-github`
-- `/prompts:alfred-dev-memory-ui`
-- `/prompts:alfred-dev-lucius`
-- `/prompts:alfred-dev-config`
-- `/prompts:alfred-dev-help`
-- `/prompts:alfred-dev-update`
+- `$alfred-dev:map-codebase`
+- `$alfred-dev:discuss`
+- `$alfred-dev:next`
+- `$alfred-dev:status`
+- `$alfred-dev:progress`
+- `$alfred-dev:pause`
+- `$alfred-dev:resume`
+- `$alfred-dev:verify`
+- `$alfred-dev:standup`
+- `$alfred-dev:blocked`
+- `$alfred-dev:in-progress`
+- `$alfred-dev:validate`
+- `$alfred-dev:search`
+- `$alfred-dev:sync-github`
+- `$alfred-dev:memory-ui`
+- `$alfred-dev:lucius`
+- `$alfred-dev:config`
+- `$alfred-dev:help`
+- `$alfred-dev:update`
 
 Los ficheros `commands/*.md` se conservan como contratos fuente del port y para
 compatibilidad documental con Alfred Dev, pero la superficie invocable en Codex
-es `prompts/*.md`.
+es `$alfred-dev:*`.

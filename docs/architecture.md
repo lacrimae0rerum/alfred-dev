@@ -1,14 +1,14 @@
 # Arquitectura
 
 Alfred Dev for Codex porta la arquitectura de Alfred Dev a las superficies que
-Codex carga hoy: plugins, skills, custom prompts, subagents, hooks y MCP.
+Codex carga hoy: plugins, skills, subagents, hooks y MCP.
 
 ## Capas
 
 | Capa | Directorios | Responsabilidad |
 |---|---|---|
 | Plugin | `.codex-plugin/`, `.agents/plugins/` | Manifest y metadata de marketplace local. |
-| Entrada | `skills/`, `prompts/`, `commands/` | Skill principal y contratos de flujos. En Codex se invocan como `/prompts:*`. |
+| Entrada | `skills/`, `commands/`, `prompts/` | Skill principal y contratos de flujos. En Codex se invocan como `$alfred-dev:*`. |
 | Equipo | `agents/`, `.codex/agents/` | 19 especialistas: Markdown fuente y TOML instalable para subagents Codex. |
 | Runtime | `core/`, `alfred_core/` | Orquestacion, configuracion, memoria, continuidad, seguridad y helpers deterministas. |
 | Integracion | `hooks/`, `mcp/`, `.mcp.json` | Hooks de ciclo de vida y servidor MCP `alfred-memory`. |
@@ -16,7 +16,7 @@ Codex carga hoy: plugins, skills, custom prompts, subagents, hooks y MCP.
 
 ## Flujo de invocacion
 
-1. El usuario invoca un prompt, por ejemplo `/prompts:alfred-dev-feature`.
+1. El usuario invoca un skill, por ejemplo `$alfred-dev:feature`.
 2. El prompt consulta estado bajo `.codex/` y prepara la fase correspondiente.
 3. Alfred coordina subagents Codex especializados segun el flujo.
 4. El runtime persiste estado en `.codex/alfred-dev-state.json`.

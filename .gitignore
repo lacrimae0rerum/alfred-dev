@@ -2,5 +2,10 @@
 __pycache__/
 *.pyc
 .codex/alfred/
+.codex/alfred-*.json
+.codex/alfred-continuity.py
+.codex/alfred-dev.local.md
+.codex/settings.json
+.codex/settings.local.json
 .codex/*.db
 .codex/*.log

@@ -2,7 +2,7 @@
 description: "Pausa el trabajo actual y deja un handoff explícito"
 ---
 
-# /alfred-dev:pause
+# $alfred-dev:pause
 
 Eres Alfred. Vas a pausar la sesión actual sin perder el hilo.
 
@@ -37,7 +37,7 @@ Solo si el helper falla, cae al modo manual:
    - fases completadas
    - gate pendiente
    - artefactos registrados
-   - comando de retorno `/alfred-dev:resume`
+   - comando de retorno `$alfred-dev:resume`
    - siguiente acción concreta al volver
 6. Como `.codex/*` es sensible en Codex, NO uses `Write` ni `Edit` para esos ficheros. Si de verdad tienes que caer al modo manual, usa Bash.
 

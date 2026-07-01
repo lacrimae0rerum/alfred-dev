@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------------------
 # Hook síncrono de bootstrap para SessionStart.
 #
-# Se ejecuta antes del contexto rico de session-start.sh para preparar, desde
+# Se ejecuta antes del contexto compacto de session-start.sh para preparar, desde
 # el primer arranque, los artefactos locales que necesitan los comandos
 # helper-first en Codex CLI:
 # - configuración local mínima (.codex/alfred-dev.local.md)
@@ -165,7 +165,6 @@ def _cache_candidates():
 def _resolve_plugin_root():
     candidates = [
         os.environ.get("ALFRED_CODEX_PLUGIN_ROOT"),
-        os.environ.get("ALFRED_CODEX_PLUGIN_ROOT"),
         EMBEDDED_PLUGIN_ROOT,
     ]
     candidates.extend(_cache_candidates())
@@ -173,7 +172,7 @@ def _resolve_plugin_root():
         resolved = _valid_root(candidate)
         if resolved:
             return resolved
-    sys.stderr.write("[Alfred Dev] No se pudo resolver la instalacion activa del plugin. Abre una nueva sesion de Codex o reinstala alfred-codex.\\n")
+    sys.stderr.write("[Alfred Dev] No se pudo resolver la instalacion activa del plugin. Abre una nueva sesion de Codex o reinstala alfred-dev.\\n")
     raise SystemExit(2)
 
 

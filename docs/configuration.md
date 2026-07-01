@@ -2,7 +2,7 @@
 
 Alfred Dev esta disenado para adaptarse a cada proyecto sin que el desarrollador tenga que rellenar formularios ni editar ficheros de configuración a mano. Al iniciarse, el plugin analiza el directorio del proyecto, detecta el stack tecnologico y aplica valores por defecto sensatos para cada apartado: autonomía, personalidad, agentes opcionales y memoria. `load_config()` puede funcionar sin fichero local, pero `session-bootstrap.sh` y `session-start.sh` materializan `.codex/alfred-dev.local.md` en la primera sesión para dejar un estado operativo explicito y estable.
 
-Cuando el desarrollador quiere personalizar el comportamiento --ajustar el nivel de autonomía, activar agentes especializados o cambiar el tono de las respuestas--, puede hacerlo editando `.codex/alfred-dev.local.md` o ejecutando `/alfred-dev:config` desde la interfaz del plugin. El formato combina YAML frontmatter para los valores estructurados con Markdown libre para notas de contexto, lo que permite que el mismo fichero sea legible tanto por humanos como por el parser del plugin. Desde la ronda actual, `/alfred-dev:config` ya no depende solo del prompt: `config_loader.py` expone `build_config_section_summaries()`, `build_config_section_menu()`, `apply_config_section_update()`, `build_config_section_change_preview()`, `update_config_section()` y `update_project_config_section()` para resumir el estado real, construir el menú principal navegable, aplicar cambios por sección, confirmar el diff efectivo y persistir el resultado sin reimplementar el round-trip del fichero.
+Cuando el desarrollador quiere personalizar el comportamiento --ajustar el nivel de autonomía, activar agentes especializados o cambiar el tono de las respuestas--, puede hacerlo editando `.codex/alfred-dev.local.md` o ejecutando `$alfred-dev:config` desde la interfaz del plugin. El formato combina YAML frontmatter para los valores estructurados con Markdown libre para notas de contexto, lo que permite que el mismo fichero sea legible tanto por humanos como por el parser del plugin. Desde la ronda actual, `$alfred-dev:config` ya no depende solo del prompt: `config_loader.py` expone `build_config_section_summaries()`, `build_config_section_menu()`, `apply_config_section_update()`, `build_config_section_change_preview()`, `update_config_section()` y `update_project_config_section()` para resumir el estado real, construir el menú principal navegable, aplicar cambios por sección, confirmar el diff efectivo y persistir el resultado sin reimplementar el round-trip del fichero.
 
 
 ## Detección automática de stack
@@ -184,11 +184,11 @@ Para proyectos Node, el parser lee `dependencies` y `devDependencies` de `packag
 
 La configuración de Alfred Dev vive en `.codex/alfred-dev.local.md`, dentro del directorio del proyecto. Se utiliza el formato YAML frontmatter (delimitado por `---`) para los valores estructurados, seguido de contenido Markdown libre para notas y contexto adicional.
 
-La razon de este formato hibrido es practica: YAML cubre la configuración tipada (booleanos, números, listas), mientras que el cuerpo Markdown permite al desarrollador añadir instrucciones en lenguaje natural que Alfred inyecta en su contexto. El fichero es editable a mano, pero la forma recomendada de gestionarlo es a traves del comando `/alfred-dev:config`, que guia al usuario por cada sección de forma interactiva. El menú principal de secciones y sus descripciones ya salen de `build_config_section_menu()` / `build_config_section_summaries()`, la confirmación de cambios puede apoyarse en `build_config_section_change_preview()`, y la persistencia final en `update_config_section()` / `update_project_config_section()`, así que la UX de `config` no depende de reescribir a mano el estado actual, el diff esperado ni el guardado final en cada prompt.
+La razon de este formato hibrido es practica: YAML cubre la configuración tipada (booleanos, números, listas), mientras que el cuerpo Markdown permite al desarrollador añadir instrucciones en lenguaje natural que Alfred inyecta en su contexto. El fichero es editable a mano, pero la forma recomendada de gestionarlo es a traves del comando `$alfred-dev:config`, que guia al usuario por cada sección de forma interactiva. El menú principal de secciones y sus descripciones ya salen de `build_config_section_menu()` / `build_config_section_summaries()`, la confirmación de cambios puede apoyarse en `build_config_section_change_preview()`, y la persistencia final en `update_config_section()` / `update_project_config_section()`, así que la UX de `config` no depende de reescribir a mano el estado actual, el diff esperado ni el guardado final en cada prompt.
 
 La fusion con los valores por defecto es recursiva: el desarrollador solo necesita definir las claves que quiere cambiar. El resto se hereda automáticamente del `DEFAULT_CONFIG` del plugin. El runtime acepta alias legacy como `autonomía`, pero la escritura canónica del plugin es `autonomia`.
 
-El menú principal de `/alfred-dev:config` expone estas 7 secciones canónicas:
+El menú principal de `$alfred-dev:config` expone estas 7 secciones canónicas:
 Autonomía por fase, Proyecto, Agentes opcionales, Memoria persistente,
 Compliance, Integraciones y Personalidad.
 
@@ -368,7 +368,7 @@ Alfred Dev define tres niveles de autonomía que se aplican a cada fase de forma
 
 En este nivel, Alfred pide confirmacion en cada gate antes de avanzar. Es el modo mas conservador y el recomendado para fases donde las decisiones tienen impacto directo en el negocio o la arquitectura.
 
-En la practica, durante un flujo `/alfred-dev:feature`:
+En la practica, durante un flujo `$alfred-dev:feature`:
 
 - **Producto**: Alfred presenta los requisitos y la historia de usuario, y espera a que el desarrollador los apruebe antes de pasar a arquitectura.
 - **Arquitectura**: El diseño técnico y el threat model se presentan para revision. No se empieza a codificar hasta que el desarrollador da el visto bueno.
@@ -439,7 +439,7 @@ Estas sugerencias estáticas son deliberadamente conservadoras. Peticiones direc
 
 ### Flujo de activacion
 
-El descubrimiento contextual se ejecuta la primera vez que el desarrollador abre `/alfred-dev:config` en un proyecto nuevo (o cuando no hay agentes opcionales activados). El flujo es:
+El descubrimiento contextual se ejecuta la primera vez que el desarrollador abre `$alfred-dev:config` en un proyecto nuevo (o cuando no hay agentes opcionales activados). El flujo es:
 
 1. Se detecta el stack con `detect_stack()`.
 2. Se ejecuta `suggest_optional_agents()` con el directorio del proyecto y la configuración actual.
@@ -576,7 +576,7 @@ Los mecanismos de seleccion de agentes opcionales coexisten:
 
 | Mecanismo | Persistencia | Contexto |
 |-----------|--------------|----------|
-| `/alfred-dev:config` | Persistente (fichero `.local.md`) | Proyecto |
+| `$alfred-dev:config` | Persistente (fichero `.local.md`) | Proyecto |
 | Descubrimiento (`suggest_optional_agents`) | Persistente (se guarda al confirmar) | Proyecto |
 | Composicion dinámica (Alfred semántico) | Efímera (solo la sesión) | Tarea |
 
@@ -599,7 +599,7 @@ La razón de que siga siendo configurable es que no todos los proyectos necesita
 
 ### Activacion
 
-Para activar la memoria, se añade la sección `memoria` al frontmatter del fichero de configuración con `enabled: true`. También se puede activar de forma interactiva con `/alfred-dev:config` eligiendo la sección de memoria. Si el proyecto nunca tuvo fichero local, los hooks de arranque ya lo habrán sembrado con `enabled: true`; desactivarla consiste en escribir `enabled: false`, no en borrar la base de datos.
+Para activar la memoria, se añade la sección `memoria` al frontmatter del fichero de configuración con `enabled: true`. También se puede activar de forma interactiva con `$alfred-dev:config` eligiendo la sección de memoria. Si el proyecto nunca tuvo fichero local, los hooks de arranque ya lo habrán sembrado con `enabled: true`; desactivarla consiste en escribir `enabled: false`, no en borrar la base de datos.
 
 Al activarse, Alfred crea automáticamente la base de datos SQLite en `.codex/alfred-memory.db` con permisos `0600` (solo el propietario puede leer y escribir). El esquema incluye tablas para iteraciones, decisiones, commits, eventos y vinculos entre commits y decisiones.
 

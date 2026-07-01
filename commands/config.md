@@ -2,7 +2,7 @@
 description: "Configura Alfred Dev: autonomía, proyecto, agentes opcionales, memoria y personalidad"
 ---
 
-# /alfred-dev:config
+# $alfred-dev:config
 
 Lee el fichero `.codex/alfred-dev.local.md` si existe. Si no existe, créalo con la configuración canónica actual del plugin.
 

@@ -5,7 +5,7 @@
       "args": [
         "-B",
         "-c",
-        "import os, runpy, sys\nfrom pathlib import Path\ncandidates = []\noverride = os.environ.get('ALFRED_CODEX_PLUGIN_ROOT')\nif override:\n    candidates.append(Path(override) / 'mcp' / 'memory_server.py')\ncandidates.append(Path.cwd() / 'mcp' / 'memory_server.py')\ncache = Path(os.environ.get('CODEX_HOME', Path.home() / '.codex')) / 'plugins' / 'cache'\ncandidates.extend(sorted(cache.glob('*/alfred-codex/*/mcp/memory_server.py'), reverse=True))\nfor server in candidates:\n    if server.is_file():\n        sys.path.insert(0, str(server.parents[1]))\n        runpy.run_path(str(server), run_name='__main__')\n        raise SystemExit(0)\nraise SystemExit('alfred-memory server not found')"
+        "import os, runpy, sys\nfrom pathlib import Path\ncandidates = []\noverride = os.environ.get('ALFRED_CODEX_PLUGIN_ROOT')\nif override:\n    candidates.append(Path(override) / 'mcp' / 'memory_server.py')\ncandidates.append(Path.cwd() / 'mcp' / 'memory_server.py')\ncache = Path(os.environ.get('CODEX_HOME', Path.home() / '.codex')) / 'plugins' / 'cache'\nfor plugin_name in ('alfred-dev', 'alfred-codex'):\n    candidates.extend(sorted(cache.glob(f'*/{plugin_name}/*/mcp/memory_server.py'), reverse=True))\nfor server in candidates:\n    if server.is_file():\n        sys.path.insert(0, str(server.parents[1]))\n        runpy.run_path(str(server), run_name='__main__')\n        raise SystemExit(0)\nraise SystemExit('alfred-memory server not found')"
       ],
       "env": {
         "ALFRED_MEMORY_LOG_LEVEL": "WARNING"

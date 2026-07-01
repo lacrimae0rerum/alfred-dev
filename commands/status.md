@@ -40,7 +40,7 @@ en Codex CLI:
 python3 .codex/alfred-continuity.py allow-stop-once "$PWD" --command "/alfred-dev:status"
 ```
 
-Si no existe `.codex/alfred-dev-state.json`, informa de que no hay sesión activa y, si hay handoff, preséntalo como trabajo pendiente recuperable. Si existe `docs/project/discovery.md`, úsalo para resumir el refinado actual y el siguiente comando recomendado. Si existen artefactos de SonIA en `docs/project/`, úsalos para resumir el estado operativo y sugiere `/alfred-dev:progress` cuando sea la vista más útil. Si existe UAT pendiente o rechazada, muéstrala como siguiente foco operativo.
+Si no existe `.codex/alfred-dev-state.json`, informa de que no hay sesión activa y, si hay handoff, preséntalo como trabajo pendiente recuperable. Si existe `docs/project/discovery.md`, úsalo para resumir el refinado actual y el siguiente comando recomendado. Si existen artefactos de SonIA en `docs/project/`, úsalos para resumir el estado operativo y sugiere `$alfred-dev:progress` cuando sea la vista más útil. Si existe UAT pendiente o rechazada, muéstrala como siguiente foco operativo.
 
 Si existe, presenta:
 - Comando activo y descripción
@@ -55,6 +55,6 @@ Si existe, presenta:
 - Resumen de progreso/kanban/trazabilidad si existe
 - Siguiente paso recomendado (incluye el comando exacto si está claro)
 
-No reabras el flujo ni intentes superar gates desde `/alfred-dev:status`.
+No reabras el flujo ni intentes superar gates desde `$alfred-dev:status`.
 
 Presenta la información de forma legible con tablas y formato claro.

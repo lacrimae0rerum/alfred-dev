@@ -1,11 +1,11 @@
 {
-  "name": "alfred-codex-local",
+  "name": "alfred-dev-local",
   "interface": {
     "displayName": "Alfred Dev for Codex Local"
   },
   "plugins": [
     {
-      "name": "alfred-codex",
+      "name": "alfred-dev",
       "source": {
         "source": "local",
         "path": "."

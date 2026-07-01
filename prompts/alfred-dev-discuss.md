@@ -64,7 +64,7 @@ Después de ejecutar el Bash:
   por una tabla en prosa: presenta un único menú seleccionable real con las
   rutas plausibles y una recomendada.
 - si el helper indica que hay sesión activa o handoff pendiente, actúa como
-  `/alfred-dev:next` o `/alfred-dev:resume` según corresponda;
+  `$alfred-dev:next` o `$alfred-dev:resume` según corresponda;
 - si el helper falla, no está disponible o `Bash` es denegado, NO lo reintentes:
   cae al modo manual inmediatamente.
 
@@ -131,17 +131,17 @@ Solo en modo manual lee, en este orden:
 
 Al cerrar, deja uno de estos siguientes pasos:
 
-- `/alfred-dev:feature` si ya hay suficiente claridad para abrir PRD e implementación completa
-- `/alfred-dev:quick` si el cambio resultante es pequeño y acotado
-- `/alfred-dev:fix` si lo que en realidad hay es una corrección concreta
-- `/alfred-dev:spike` si siguen faltando datos técnicos y toca investigar
+- `$alfred-dev:feature` si ya hay suficiente claridad para abrir PRD e implementación completa
+- `$alfred-dev:quick` si el cambio resultante es pequeño y acotado
+- `$alfred-dev:fix` si lo que en realidad hay es una corrección concreta
+- `$alfred-dev:spike` si siguen faltando datos técnicos y toca investigar
 
 Si hay más de una salida razonable de verdad, presenta solo esas rutas en un único menú navegable y deja una recomendada cuando corresponda.
 
 ## Restricciones
 
 - NO generes todavía un PRD formal completo salvo que el usuario te lo pida.
-- NO abras arquitectura ni implementación dentro de `/alfred-dev:discuss`.
+- NO abras arquitectura ni implementación dentro de `$alfred-dev:discuss`.
 - NO uses `pregunta explícita al usuario` por defecto.
 - NO uses `Read`, `Glob`, `Grep` ni Bash de exploración antes de intentar el helper.
 - Si `Bash` fue denegado para el helper, NO reintentes `Bash` en este comando.

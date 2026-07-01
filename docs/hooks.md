@@ -34,7 +34,7 @@ Los hooks se declaran en el fichero `hooks/hooks.json` del repositorio. Cada ent
 }
 ```
 
-El campo `matcher` solo debe usarse en eventos donde Codex lo soporta. En Alfred se usa para filtrar nombre de herramienta (`PreToolUse` y `PostToolUse`) o tipo de sesión (`SessionStart`). `UserPromptExpansion` también soporta filtrar por `command_name`, pero Alfred lo omite deliberadamente para capturar todos los slash commands y prompts MCP expandidos con el mismo hook fail-open. Si no se específica matcher, el hook se ejecuta para todas las invocaciones de ese evento. Esta distinción es importante: un hook de `PostToolUse` sin matcher se ejecutaria despues de cada operación de cualquier herramienta, lo que generaria un coste de rendimiento innecesario. En eventos como `UserPromptSubmit`, `Stop`, `PostToolBatch`, `TaskCreated`, `TaskCompleted`, `WorktreeCreate`, `WorktreeRemove`, `CwdChanged`, `MessageDisplay` y `TeammateIdle`, Codex ignora `matcher`; `release:audit` falla si Alfred declara un matcher ahí para no crear una falsa sensación de filtrado. El campo `if` solo se evalua en eventos de herramientas (`PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PermissionRequest` y `PermissionDenied`); en cualquier otro evento no debe usarse porque el handler no se ejecutaria.
+El campo `matcher` solo debe usarse en eventos donde Codex lo soporta. En Alfred se usa para filtrar nombre de herramienta (`PreToolUse` y `PostToolUse`) o tipo de sesión (`SessionStart`). `UserPromptExpansion` también soporta filtrar por `command_name`, pero Alfred lo omite deliberadamente para capturar skill mentions, prompts MCP expandidos y rutas legacy con el mismo hook fail-open. Si no se específica matcher, el hook se ejecuta para todas las invocaciones de ese evento. Esta distinción es importante: un hook de `PostToolUse` sin matcher se ejecutaria despues de cada operación de cualquier herramienta, lo que generaria un coste de rendimiento innecesario. En eventos como `UserPromptSubmit`, `Stop`, `PostToolBatch`, `TaskCreated`, `TaskCompleted`, `WorktreeCreate`, `WorktreeRemove`, `CwdChanged`, `MessageDisplay` y `TeammateIdle`, Codex ignora `matcher`; `release:audit` falla si Alfred declara un matcher ahí para no crear una falsa sensación de filtrado. El campo `if` solo se evalua en eventos de herramientas (`PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PermissionRequest` y `PermissionDenied`); en cualquier otro evento no debe usarse porque el handler no se ejecutaria.
 
 ### Invocación
 
@@ -94,7 +94,7 @@ Este es el hook mas complejo del plugin y se ejecuta justo despues del bootstrap
 
 El script recorre cinco fuentes de información, cada una opcional y con fallo silencioso:
 
-1. **Presentacion del plugin.** Un bloque estático que describe el equipo de agentes (incluyendo SonIA), las rutas disponibles (`/alfred`, `map-codebase`, `discuss`, `next`, `pause`, `resume`, `progress`, `verify`, `quick`, `feature`, `fix`, `spike`, `ship`, `audit`, `lucius`, `config`, `status`, `update`, `help`) y las reglas de operación (quality gates verificables con evidencia, TDD estricto, auditoria de seguridad por fase).
+1. **Presentacion del plugin.** Un bloque estático que describe el equipo de agentes (incluyendo SonIA), las rutas disponibles (`$alfred-dev:alfred`, `$alfred-dev:map-codebase`, `$alfred-dev:discuss`, `$alfred-dev:next`, `$alfred-dev:pause`, `$alfred-dev:resume`, `$alfred-dev:progress`, `$alfred-dev:verify`, `$alfred-dev:quick`, `$alfred-dev:feature`, `$alfred-dev:fix`, `$alfred-dev:spike`, `$alfred-dev:ship`, `$alfred-dev:audit`, `$alfred-dev:lucius`, `$alfred-dev:config`, `$alfred-dev:status`, `$alfred-dev:update`, `$alfred-dev:help`) y las reglas de operación (quality gates verificables con evidencia, TDD estricto, auditoria de seguridad por fase).
 
 2. **Configuración local del proyecto.** Lee `.codex/alfred-dev.local.md` si existe. Este fichero permite al usuario definir preferencias por proyecto (lenguaje, framework, convenciones específicas) que Codex incorpora a su comportamiento.
 
@@ -267,7 +267,7 @@ Para reducir ruido, no revisa el contenido tal cual: en Markdown ignora bloques 
 
 **Evento:** `PostToolUse` -- **Matcher:** `Write|Edit|Bash|Read|Glob|Grep|Agent|WebFetch|WebSearch|NotebookEdit` + `UserPromptSubmit` + `UserPromptExpansion` + `PreCompact` + `Stop` -- **Timeout:** 10 s
 
-Este hook centraliza toda la captura de actividad en un único punto de entrada. Sustituye a los antiguos `memory-capture.py` y `commit-capture.py` (unificados en v0.3.6) y además amplia la cobertura a practicamente todas las herramientas de Codex, los prompts del usuario, la expansion directa de slash commands, la compactación de contexto y el cierre de sesión. En `UserPromptSubmit` y `UserPromptExpansion` también hace una preparación helper-first muy acotada para continuidad: puede dejar listo `map-codebase`, `discuss`, `quick`, `feature`, `fix`, `spike`, `ship`, `audit` o `lucius` antes de que el modelo entre en el razonamiento principal, e incluso preparar `map-codebase` cuando `/alfred` entra por un repo brownfield sin mapa previo.
+Este hook centraliza toda la captura de actividad en un único punto de entrada. Sustituye a los antiguos `memory-capture.py` y `commit-capture.py` (unificados en v0.3.6) y además amplia la cobertura a practicamente todas las herramientas de Codex, los prompts del usuario, la expansion directa de skill mentions, la compactación de contexto y el cierre de sesión. En `UserPromptSubmit` y `UserPromptExpansion` también hace una preparación helper-first muy acotada para continuidad: puede dejar listo `map-codebase`, `discuss`, `quick`, `feature`, `fix`, `spike`, `ship`, `audit` o `lucius` antes de que el modelo entre en el razonamiento principal, e incluso preparar `map-codebase` cuando `$alfred-dev:alfred` entra por un repo brownfield sin mapa previo.
 
 El hook registra cada evento en la base de datos SQLite de memoria persistente (`alfred-memory.db`) con tres niveles de detalle:
 
@@ -292,7 +292,7 @@ La tabla de dispatchers mapea cada tipo de evento a su función de procesamiento
 | `WebSearch` | PostToolUse | Busqueda web: query y resultados. Los resultados muy grandes se guardan como preview. |
 | `NotebookEdit` | PostToolUse | Edicion de notebook Jupyter: ruta y comando. |
 | `UserPromptSubmit` | Evento propio | Prompt del usuario: texto completo. Si es un slash command helper-first de Alfred, prepara antes los artefactos de continuidad y registra `alfred_prefetched`. |
-| `UserPromptExpansion` | Evento propio | Slash command o prompt MCP expandido antes de llegar a Codex. Registra `expansion_type`, `command_name` y `command_source` cuando Codex los entrega, y cubre la ruta directa `/alfred` que no pasa por `PreToolUse`. |
+| `UserPromptExpansion` | Evento propio | Skill mention o prompt MCP expandido antes de llegar a Codex. Registra `expansion_type`, `command_name` y `command_source` cuando Codex los entrega, y cubre la ruta directa `$alfred-dev:alfred` que no pasa por `PreToolUse`. |
 | `PreCompact` | Evento propio | Marcador de compactación de contexto. |
 | `Stop` | Evento propio | Cierre de sesión: marca el fin y cierra la iteracion activa si existe. |
 
@@ -390,7 +390,7 @@ sequenceDiagram
 | `PostToolUse` | `Bash` | `quality-gate.py` | 10 s | No | No | Resultado de ejecuciones de tests. Detecta fallos en 17 runners de tests y avisa sin bloquear. |
 | `PostToolUse` | `Write\|Edit` | `dependency-watch.py` | 10 s | No | No | Modificaciones en manifiestos de dependencias. Sugiere revision de seguridad de las dependencias anadidas. |
 | `PostToolUse` | `Write\|Edit` | `spelling-guard.py` | 10 s | No | No | Palabras castellanas sin tilde en ficheros de texto. Detecta ~80 errores comunes y avisa sin bloquear. |
-| `PostToolUse` | `Write\|Edit\|Bash\|Read\|Glob\|Grep\|Agent\|WebFetch\|WebSearch\|NotebookEdit` + `UserPromptSubmit` + `UserPromptExpansion` + `PreCompact` + `Stop` | `activity-capture.py` | 10 s | No | No | Captura centralizada de toda la actividad: ficheros, comandos, busquedas, subagentes, prompts, slash commands expandidos, compactaciones y cierre de sesión. Registra en SQLite con tres niveles de detalle (summary, payload, content). |
+| `PostToolUse` | `Write\|Edit\|Bash\|Read\|Glob\|Grep\|Agent\|WebFetch\|WebSearch\|NotebookEdit` + `UserPromptSubmit` + `UserPromptExpansion` + `PreCompact` + `Stop` | `activity-capture.py` | 10 s | No | No | Captura centralizada de toda la actividad: ficheros, comandos, busquedas, subagentes, prompts, skill mentions expandidos, compactaciones y cierre de sesión. Registra en SQLite con tres niveles de detalle (summary, payload, content). |
 | `PreCompact` | `manual\|auto` omitido para cubrir ambos | `memory-compact.py` | 10 s | No | No | Compactación de contexto. Inyecta decisiones críticas como contexto protegido para que sobrevivan a la compactación. |
 
 ---

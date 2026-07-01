@@ -509,27 +509,37 @@ def _load_state_file(file_path: str) -> Optional[dict]:
     return state
 
 
+def _format_alfred_invocation(command: str) -> str:
+    """Devuelve la invocación pública Codex para un comando Alfred."""
+    normalized = (command or "").strip().lower()
+    if normalized == "alfred":
+        return "$alfred-dev:alfred"
+    return f"$alfred-dev:{normalized or 'alfred'}"
+
+
 def _parse_alfred_prefetch_prompt(prompt_text: str) -> Optional[dict]:
-    """Extrae el slash command de Alfred si admite preparación helper-first."""
+    """Extrae la mención Alfred si admite preparación helper-first."""
     normalized = (prompt_text or "").strip()
+    if not normalized:
+        return None
+
     first_line = normalized.splitlines()[0].strip()
     alias_match = re.match(
-        r"^/alfred(?:\s+(?P<rest>.*))?$",
+        r"^(?:/alfred(?:\s+(?P<slash_rest>.*))?|\$alfred-dev:alfred(?:\s+(?P<dollar_rest>.*))?)$",
         first_line,
         flags=re.IGNORECASE,
     )
     if alias_match:
-        raw_request = " ".join((alias_match.group("rest") or "").split()).strip()
+        raw_request = " ".join(
+            (alias_match.group("slash_rest") or alias_match.group("dollar_rest") or "").split()
+        ).strip()
         return {
             "source_command": "alfred",
             "raw_request": raw_request,
         }
 
-    if not normalized.startswith("/alfred-dev:"):
-        return None
-
     match = re.match(
-        r"^/alfred-dev:(?P<command>[a-z0-9-]+)\b(?P<rest>.*)$",
+        r"^(?:/|\$)alfred-dev:(?P<command>[a-z0-9-]+)\b(?P<rest>.*)$",
         first_line,
         flags=re.IGNORECASE,
     )
@@ -614,13 +624,13 @@ def _prefetch_alfred_continuity(prompt_text: str) -> Optional[dict]:
         result = action(project_dir, raw_request)
     except RuntimeError as exc:
         print(
-            f"{_LOG_PREFIX} Aviso: prefetch /{source_command if source_command == 'alfred' else 'alfred-dev:' + source_command} omitido: {exc}",
+            f"{_LOG_PREFIX} Aviso: prefetch {_format_alfred_invocation(source_command)} omitido: {exc}",
             file=sys.stderr,
         )
         return None
     except Exception as exc:
         print(
-            f"{_LOG_PREFIX} Aviso: fallo en prefetch /{source_command if source_command == 'alfred' else 'alfred-dev:' + source_command}: {exc}",
+            f"{_LOG_PREFIX} Aviso: fallo en prefetch {_format_alfred_invocation(source_command)}: {exc}",
             file=sys.stderr,
         )
         return None
@@ -645,10 +655,10 @@ def _log_prefetch_event(db, project_dir: str, payload: dict) -> None:
             continue
         artifacts.append(_relative_path(value, project_dir))
 
-    source_label = "/alfred" if source_command == "alfred" else f"/alfred-dev:{source_command}"
+    source_label = _format_alfred_invocation(source_command)
     summary = f"Prefetch Alfred: {source_label}"
     if source_command != command:
-        summary += f" preparó /alfred-dev:{command}"
+        summary += f" preparó {_format_alfred_invocation(command)}"
     else:
         summary += " preparado antes del flujo principal"
 

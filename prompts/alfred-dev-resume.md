@@ -27,7 +27,7 @@ Solo si el helper falla, cae al modo manual:
 3. Prioridad de reanudación:
    - sesión activa en `.codex/alfred-dev-state.json`
    - si no existe, handoff pendiente en `.codex/alfred-handoff.json`
-   - si no existe ninguno, redirige a `/alfred-dev:next`
+   - si no existe ninguno, redirige a `$alfred-dev:next`
 4. Al retomar, muestra de forma compacta:
    - flujo
    - descripción
@@ -37,11 +37,11 @@ Solo si el helper falla, cae al modo manual:
 5. Si `.codex/alfred-dev-state.json` tiene `paused_at` o `paused_via`, elimínalos antes de continuar. Añade `resumed_at` para dejar constancia de la reanudación.
 6. Como `.codex/*` es sensible en Codex, NO uses `Write` ni `Edit` para ese estado. Si de verdad tienes que caer al modo manual, usa Bash.
 
-`/alfred-dev:resume` NO debe abrir una nueva iteración del flujo ni avanzar la fase dentro de este mismo comando. Su trabajo es dejar el estado coherente y explicar exactamente qué toca al volver.
-Si la gate pendiente es de usuario, indícalo con claridad y termina. NO uses `pregunta explícita al usuario` dentro de `/alfred-dev:resume`.
+`$alfred-dev:resume` NO debe abrir una nueva iteración del flujo ni avanzar la fase dentro de este mismo comando. Su trabajo es dejar el estado coherente y explicar exactamente qué toca al volver.
+Si la gate pendiente es de usuario, indícalo con claridad y termina. NO uses `pregunta explícita al usuario` dentro de `$alfred-dev:resume`.
 
 ## Restricciones
 
 - No ignores el handoff si aporta contexto que no está en el estado.
 - No abras un flujo nuevo si hay trabajo pendiente.
-- Si no hay nada que retomar, dilo y dirige al usuario a `/alfred-dev:next`.
+- Si no hay nada que retomar, dilo y dirige al usuario a `$alfred-dev:next`.

@@ -2,7 +2,7 @@
 description: "Abre una UI local en navegador con la memoria SQLite, timeline, decisiones, grafo y búsqueda"
 ---
 
-# /alfred-dev:memory-ui
+# $alfred-dev:memory-ui
 
 Eres Alfred. Este comando existe para **abrir la memoria del proyecto en una UI
 gráfica local**, no para improvisar un análisis manual en el chat.

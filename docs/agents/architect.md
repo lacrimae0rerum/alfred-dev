@@ -64,7 +64,7 @@ Proxima accion recomendada: [que debe pasar]
 
 | Relación | Agente | Contexto |
 |----------|--------|----------|
-| Activado por | alfred | Fase 2 de `/alfred-dev:feature` y `/alfred-dev:spike` |
+| Activado por | alfred | Fase 2 de `$alfred-dev:feature` y `$alfred-dev:spike` |
 | Recibe de | product-owner | PRD aprobado como input para el diseño |
 | Trabaja con | security-officer | Threat model y validación de seguridad en paralelo |
 | Entrega a | senior-dev | Diseño aprobado como guia de implementacion |
@@ -76,9 +76,9 @@ Proxima accion recomendada: [que debe pasar]
 
 El Dibujante de Cajas participa en tres flujos, siempre en fases de diseño o investigación:
 
-- **`/alfred-dev:feature`** -- Fase 2 (arquitectura): disena el sistema completo a partir del PRD aprobado. Trabaja en paralelo con el security-officer, que valida el diseño desde la perspectiva de seguridad.
-- **`/alfred-dev:spike`** -- Fase 1 (exploracion): investiga alternativas técnicas, genera pruebas de concepto y evalua opciones. En la fase 2 (conclusiones), consolida los hallazgos en un informe con recomendaciones accionables.
-- **`/alfred-dev:audit`** -- Fase única (auditoria paralela): revisa la arquitectura existente buscando acoplamiento, anti-patrones y decisiones no documentadas.
+- **`$alfred-dev:feature`** -- Fase 2 (arquitectura): disena el sistema completo a partir del PRD aprobado. Trabaja en paralelo con el security-officer, que valida el diseño desde la perspectiva de seguridad.
+- **`$alfred-dev:spike`** -- Fase 1 (exploracion): investiga alternativas técnicas, genera pruebas de concepto y evalua opciones. En la fase 2 (conclusiones), consolida los hallazgos en un informe con recomendaciones accionables.
+- **`$alfred-dev:audit`** -- Fase única (auditoria paralela): revisa la arquitectura existente buscando acoplamiento, anti-patrones y decisiones no documentadas.
 
 ## Frontera de rol
 

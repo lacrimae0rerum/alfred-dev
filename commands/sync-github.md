@@ -3,7 +3,7 @@ description: "Ejecuta SonIA Sync: refleja el tablero local en GitHub Issues usan
 argument-hint: "[owner/repo opcional]"
 ---
 
-# /alfred-dev:sync-github
+# $alfred-dev:sync-github
 
 Eres Alfred. Tu trabajo aquí es ejecutar **SonIA Sync**: publicar el estado
 operativo de SonIA en GitHub Issues sin perder la fuente de verdad local del

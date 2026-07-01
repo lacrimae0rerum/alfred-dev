@@ -17,31 +17,31 @@ Petición del usuario: $ARGUMENTS
 
 Elegir y ejecutar el comando correcto entre:
 
-- `/alfred-dev:next`
-- `/alfred-dev:resume`
-- `/alfred-dev:map-codebase`
-- `/alfred-dev:progress`
-- `/alfred-dev:memory-ui`
-- `/alfred-dev:discuss`
-- `/alfred-dev:feature`
-- `/alfred-dev:quick`
-- `/alfred-dev:fix`
-- `/alfred-dev:spike`
-- `/alfred-dev:audit`
-- `/alfred-dev:verify`
-- `/alfred-dev:ship`
-- `/alfred-dev:status`
-- `/alfred-dev:pause`
-- `/alfred-dev:standup`
-- `/alfred-dev:blocked`
-- `/alfred-dev:in-progress`
-- `/alfred-dev:config`
-- `/alfred-dev:validate`
-- `/alfred-dev:search`
-- `/alfred-dev:sync-github`
-- `/alfred-dev:lucius`
-- `/alfred-dev:update`
-- `/alfred-dev:help`
+- `$alfred-dev:next`
+- `$alfred-dev:resume`
+- `$alfred-dev:map-codebase`
+- `$alfred-dev:progress`
+- `$alfred-dev:memory-ui`
+- `$alfred-dev:discuss`
+- `$alfred-dev:feature`
+- `$alfred-dev:quick`
+- `$alfred-dev:fix`
+- `$alfred-dev:spike`
+- `$alfred-dev:audit`
+- `$alfred-dev:verify`
+- `$alfred-dev:ship`
+- `$alfred-dev:status`
+- `$alfred-dev:pause`
+- `$alfred-dev:standup`
+- `$alfred-dev:blocked`
+- `$alfred-dev:in-progress`
+- `$alfred-dev:config`
+- `$alfred-dev:validate`
+- `$alfred-dev:search`
+- `$alfred-dev:sync-github`
+- `$alfred-dev:lucius`
+- `$alfred-dev:update`
+- `$alfred-dev:help`
 
 ## Protocolo obligatorio
 
@@ -84,10 +84,10 @@ Usa ese resultado como señal primaria para detectar:
 - contexto greenfield/proyecto ya mapeado
 
 Si el helper devuelve `command: "alfred"` o una directiva que vuelve a
-`/alfred-dev:alfred`, no lo ejecutes ni lo presentes como redirección. Esa señal
+`$alfred-dev:alfred`, no lo ejecutes ni lo presentes como redirección. Esa señal
 solo indica que falta elegir una ruta concreta. Continúa con la clasificación de
 intención de este comando y elige un destino distinto; si el usuario pregunta
-"qué toca ahora", "continuar" o equivalente, actúa como `/alfred-dev:next`.
+"qué toca ahora", "continuar" o equivalente, actúa como `$alfred-dev:next`.
 
 ## Reglas de decisión
 
@@ -95,39 +95,39 @@ intención de este comando y elige un destino distinto; si el usuario pregunta
 
 Si el usuario pide claramente una de estas acciones, ejecútala sin entrevista:
 
-- ver estado, “qué hay abierto”, “cómo va”, “status” → actúa como `/alfred-dev:status`
-- standup, “daily”, “qué tenemos hoy”, “resumen diario” → actúa como `/alfred-dev:standup`
-- bloqueos, “qué está bloqueado”, “blocked” → actúa como `/alfred-dev:blocked`
-- trabajo en curso, “qué está en marcha”, “in progress” → actúa como `/alfred-dev:in-progress`
-- retomar, continuar, seguir, “qué toca ahora”, “usa Alfred y sigue” → actúa como `/alfred-dev:next`
-- pausar, dejarlo para luego, congelar sesión → actúa como `/alfred-dev:pause`
-- verificar, UAT, aceptación manual, validar entregable → actúa como `/alfred-dev:verify`
-- progreso, backlog, kanban, bloqueos, trazabilidad, “cómo va el proyecto” → actúa como `/alfred-dev:progress`
-- memoria visual, dashboard de memoria, grafo de decisiones, “abre la memoria”, “UI de memoria” → actúa como `/alfred-dev:memory-ui`
-- validar tablero, integridad, “validate”, “revisa consistencia” → actúa como `/alfred-dev:validate`
-- buscar en SonIA, memoria, trazabilidad, “search” → actúa como `/alfred-dev:search`
-- sincronizar GitHub, issues, tablero remoto, “sync GitHub” → actúa como `/alfred-dev:sync-github`
-- discutir, refinar, aterrizar, aclarar alcance, concretar UX/API antes de construir → actúa como `/alfred-dev:discuss`
-- configurar Alfred, cambiar autonomía o agentes → actúa como `/alfred-dev:config`
-- ayuda o lista de comandos → actúa como `/alfred-dev:help`
-- preparar release, publicar o desplegar → actúa como `/alfred-dev:ship`
-- auditar seguridad/calidad/compliance → actúa como `/alfred-dev:audit`
-- hacer un cambio pequeño, puntual, acotado o “rápido” sin toda la ceremonia → actúa como `/alfred-dev:quick`
-- segunda opinión técnica externa, “quiero que Lucius lo revise”, auditoría externa con Codex CLI → actúa como `/alfred-dev:lucius`
-- actualizar Alfred Dev, comprobar versión nueva del plugin, refrescar instalación → actúa como `/alfred-dev:update`
+- ver estado, “qué hay abierto”, “cómo va”, “status” → actúa como `$alfred-dev:status`
+- standup, “daily”, “qué tenemos hoy”, “resumen diario” → actúa como `$alfred-dev:standup`
+- bloqueos, “qué está bloqueado”, “blocked” → actúa como `$alfred-dev:blocked`
+- trabajo en curso, “qué está en marcha”, “in progress” → actúa como `$alfred-dev:in-progress`
+- retomar, continuar, seguir, “qué toca ahora”, “usa Alfred y sigue” → actúa como `$alfred-dev:next`
+- pausar, dejarlo para luego, congelar sesión → actúa como `$alfred-dev:pause`
+- verificar, UAT, aceptación manual, validar entregable → actúa como `$alfred-dev:verify`
+- progreso, backlog, kanban, bloqueos, trazabilidad, “cómo va el proyecto” → actúa como `$alfred-dev:progress`
+- memoria visual, dashboard de memoria, grafo de decisiones, “abre la memoria”, “UI de memoria” → actúa como `$alfred-dev:memory-ui`
+- validar tablero, integridad, “validate”, “revisa consistencia” → actúa como `$alfred-dev:validate`
+- buscar en SonIA, memoria, trazabilidad, “search” → actúa como `$alfred-dev:search`
+- sincronizar GitHub, issues, tablero remoto, “sync GitHub” → actúa como `$alfred-dev:sync-github`
+- discutir, refinar, aterrizar, aclarar alcance, concretar UX/API antes de construir → actúa como `$alfred-dev:discuss`
+- configurar Alfred, cambiar autonomía o agentes → actúa como `$alfred-dev:config`
+- ayuda o lista de comandos → actúa como `$alfred-dev:help`
+- preparar release, publicar o desplegar → actúa como `$alfred-dev:ship`
+- auditar seguridad/calidad/compliance → actúa como `$alfred-dev:audit`
+- hacer un cambio pequeño, puntual, acotado o “rápido” sin toda la ceremonia → actúa como `$alfred-dev:quick`
+- segunda opinión técnica externa, “quiero que Lucius lo revise”, auditoría externa con Codex CLI → actúa como `$alfred-dev:lucius`
+- actualizar Alfred Dev, comprobar versión nueva del plugin, refrescar instalación → actúa como `$alfred-dev:update`
 
 ### 2. Continuidad y brownfield tienen prioridad
 
 Si NO hay una instrucción operativa explícita pero sí existe contexto vivo:
 
-- si el helper devuelve `resume` y hay sesión activa (`fase_actual` distinta de `completado`) → actúa como `/alfred-dev:next`
-- si el helper devuelve `resume` y no hay sesión activa pero sí handoff pendiente (`resolved != true`) → actúa como `/alfred-dev:resume`
-- si el helper devuelve `verify` → actúa como `/alfred-dev:verify`
-- si el helper devuelve `map-codebase` → actúa como `/alfred-dev:map-codebase`
+- si el helper devuelve `resume` y hay sesión activa (`fase_actual` distinta de `completado`) → actúa como `$alfred-dev:next`
+- si el helper devuelve `resume` y no hay sesión activa pero sí handoff pendiente (`resolved != true`) → actúa como `$alfred-dev:resume`
+- si el helper devuelve `verify` → actúa como `$alfred-dev:verify`
+- si el helper devuelve `map-codebase` → actúa como `$alfred-dev:map-codebase`
 
 Si el usuario describe trabajo nuevo (`feature`, `fix`, `spike` o `audit`) pero el
 repo es brownfield y todavía no existe el mapa persistente, **prioriza también**
-`/alfred-dev:map-codebase` antes de abrir el flujo principal. El objetivo es que
+`$alfred-dev:map-codebase` antes de abrir el flujo principal. El objetivo es que
 Alfred no arranque un equipo multiagente “a ciegas” en un proyecto existente.
 
 No preguntes “¿qué quiere hacer?” si la continuidad ya deja claro el siguiente paso.
@@ -136,15 +136,15 @@ No preguntes “¿qué quiere hacer?” si la continuidad ya deja claro el sigui
 
 Si el usuario está describiendo trabajo nuevo y no aplica una ruta de continuidad:
 
-- idea vaga, petición de feature todavía verde, necesidad de concretar alcance o decisiones de UX/API antes de construir → `/alfred-dev:discuss`
-- cambio pequeño, local, acotado, sin necesidad aparente de PRD o arquitectura formal → `/alfred-dev:quick`
-- nueva funcionalidad, mejora de producto, integración nueva, refactor con valor funcional → `/alfred-dev:feature`
-- bug, error, regresión, comportamiento roto → `/alfred-dev:fix`
-- investigación, comparativa, “qué opción conviene”, PoC, benchmark → `/alfred-dev:spike`
-- revisión global del proyecto, riesgos o calidad → `/alfred-dev:audit`
+- idea vaga, petición de feature todavía verde, necesidad de concretar alcance o decisiones de UX/API antes de construir → `$alfred-dev:discuss`
+- cambio pequeño, local, acotado, sin necesidad aparente de PRD o arquitectura formal → `$alfred-dev:quick`
+- nueva funcionalidad, mejora de producto, integración nueva, refactor con valor funcional → `$alfred-dev:feature`
+- bug, error, regresión, comportamiento roto → `$alfred-dev:fix`
+- investigación, comparativa, “qué opción conviene”, PoC, benchmark → `$alfred-dev:spike`
+- revisión global del proyecto, riesgos o calidad → `$alfred-dev:audit`
 
 Pasa la petición completa y cualquier contexto útil detectado al comando destino.
-Si eliges `/alfred-dev:discuss`, NO lo dejes en una redirección muda: ejecuta
+Si eliges `$alfred-dev:discuss`, NO lo dejes en una redirección muda: ejecuta
 el helper de `discuss` o actúa como ese comando y deja visible el resultado del
 refinado y el siguiente paso recomendado. Si `Bash` es denegado al intentar el
 helper, cae a la ruta manual de `discuss` y NO reintentes `Bash`.
@@ -172,7 +172,7 @@ rellenes huecos con supuestos ni conviertas una recomendación en un resultado.
 
 - NO presentes una tabla de comandos salvo que el usuario la pida.
 - NO ofrezcas un menú genérico si el siguiente paso es evidente.
-- NO uses nombres viejos del plugin sin prefijo `-dev`; usa siempre `/alfred-dev:...`.
+- NO uses nombres viejos del plugin sin prefijo `-dev`; usa siempre `$alfred-dev:...`.
 - `map-codebase`, `next`, `pause`, `resume`, `standup`, `blocked`,
   `in-progress`, `validate`, `search`, `memory-ui`, `sync-github` y `update` son comandos operativos.
   No activan el equipo multiagente completo.

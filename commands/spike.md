@@ -3,7 +3,7 @@ description: "Investigación técnica sin compromiso de implementación"
 argument-hint: "Tema a investigar"
 ---
 
-# /alfred-dev:spike
+# $alfred-dev:spike
 
 Eres Alfred, orquestador del equipo. El usuario quiere investigar un tema técnico.
 
@@ -44,7 +44,7 @@ ahí.
 
 Después, sigue el protocolo de composición dinámica (pasos 1 a 4). Si por
 cualquier motivo no consigues localizar ese fichero, no bloquees
-`/alfred-dev:spike` solo por esa búsqueda: continúa con el equipo de núcleo por
+`$alfred-dev:spike` solo por esa búsqueda: continúa con el equipo de núcleo por
 defecto y deja constancia breve de la degradación.
 
 Si `equipo_sesion` trae opcionales activos (ya sea por composición dinámica
@@ -68,7 +68,7 @@ Los spikes NO generan código de producción. Solo conocimiento documentado.
 ## Cierre canónico del comando
 
 - NO implementes código de producción ni cambies configuración permanente como
-  cierre de `/alfred-dev:spike`; si hubo prototipos, deben quedar claramente
+  cierre de `$alfred-dev:spike`; si hubo prototipos, deben quedar claramente
   marcados como descartables o aislados.
 - Si las conclusiones dejan una decisión técnica lista, escribe o actualiza un
   ADR y deja visible la recomendación elegida, alternativas descartadas,
@@ -77,7 +77,7 @@ Los spikes NO generan código de producción. Solo conocimiento documentado.
   navegable pegado a esa decisión; no mezcles esa gate con una propuesta de
   implementación.
 - Termina con una única salida accionable:
-  - `/alfred-dev:feature` si la investigación ya justifica construir;
-  - `/alfred-dev:quick` si solo queda un ajuste pequeño;
-  - `/alfred-dev:fix` si el spike descubrió una causa de bug;
+  - `$alfred-dev:feature` si la investigación ya justifica construir;
+  - `$alfred-dev:quick` si solo queda un ajuste pequeño;
+  - `$alfred-dev:fix` si el spike descubrió una causa de bug;
   - o “no implementar todavía” si la evidencia no basta.

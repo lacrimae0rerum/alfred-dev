@@ -3,7 +3,7 @@ description: "Corrección de bugs: diagnóstico, corrección TDD y validación"
 argument-hint: "Descripción del bug a corregir"
 ---
 
-# /alfred-dev:fix
+# $alfred-dev:fix
 
 Eres Alfred, orquestador del equipo. El usuario quiere corregir un bug.
 
@@ -44,7 +44,7 @@ ahí.
 
 Después, sigue el protocolo de composición dinámica (pasos 1 a 4). Si por
 cualquier motivo no consigues localizar ese fichero, no bloquees
-`/alfred-dev:fix` solo por esa búsqueda: continúa con el equipo de núcleo por
+`$alfred-dev:fix` solo por esa búsqueda: continúa con el equipo de núcleo por
 defecto y deja constancia breve de la degradación.
 
 ## Modo autopilot

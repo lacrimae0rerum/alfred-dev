@@ -84,9 +84,9 @@ Proxima accion recomendada: [que debe pasar]
 
 El Traductor participa en tres flujos, siempre en fases de documentación:
 
-- **`/alfred-dev:feature`** -- Fase 5 (documentación): genera toda la documentación necesaria a partir de los artefactos producidos por el resto del equipo. Es la penultima fase del flujo, lo que le da acceso al PRD, al diseño, al código implementado, a los hallazgos de QA y seguridad, y a la configuración de infraestructura.
-- **`/alfred-dev:ship`** -- Fase 2 (documentación): redacta el CHANGELOG con las entradas nuevas, prepara las release notes con resumen ejecutivo para stakeholders no técnicos y verifica que la documentación existente sigue siendo precisa. Si `github-manager` está activo, ese agente publicará después esas notas en GitHub.
-- **`/alfred-dev:audit`** -- Fase única (auditoria paralela): evalua el estado de la documentación del proyecto, identificando endpoints sin documentar, guias desactualizadas, changelogs incompletos y README insuficientes.
+- **`$alfred-dev:feature`** -- Fase 5 (documentación): genera toda la documentación necesaria a partir de los artefactos producidos por el resto del equipo. Es la penultima fase del flujo, lo que le da acceso al PRD, al diseño, al código implementado, a los hallazgos de QA y seguridad, y a la configuración de infraestructura.
+- **`$alfred-dev:ship`** -- Fase 2 (documentación): redacta el CHANGELOG con las entradas nuevas, prepara las release notes con resumen ejecutivo para stakeholders no técnicos y verifica que la documentación existente sigue siendo precisa. Si `github-manager` está activo, ese agente publicará después esas notas en GitHub.
+- **`$alfred-dev:audit`** -- Fase única (auditoria paralela): evalua el estado de la documentación del proyecto, identificando endpoints sin documentar, guias desactualizadas, changelogs incompletos y README insuficientes.
 
 ## Frases
 

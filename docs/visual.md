@@ -3,7 +3,7 @@
 `visual/` pertenece al plugin de la rama `main`. No es la web publica de
 Alfred Dev; esa vive en la rama `Alfred-Astro`. Esta carpeta contiene el
 companion visual local que usa Selina durante la fase `estilo_visual` del flujo
-`/alfred-dev:feature`, solo cuando el proyecto tiene frontend.
+`$alfred-dev:feature`, solo cuando el proyecto tiene frontend.
 
 El objetivo del runtime visual es sacar una decision de direccion visual del
 terminal y llevarla a una pantalla local: Selina genera propuestas HTML, el

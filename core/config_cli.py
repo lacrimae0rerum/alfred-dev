@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI determinista para la superficie de `/alfred-dev:config`."""
+"""CLI determinista para la superficie de `$alfred-dev:config`."""
 
 from __future__ import annotations
 
@@ -69,7 +69,7 @@ def _render_markdown(summary: dict) -> str:
                 json.dumps(summary["menu"], ensure_ascii=False, indent=2),
                 "```",
                 "",
-                "Para modificar valores, ejecuta `/alfred-dev:config` en una sesion interactiva "
+                "Para modificar valores, ejecuta `$alfred-dev:config` en una sesion interactiva "
                 "o indica la seccion y el cambio de forma explicita.",
             ]
         )

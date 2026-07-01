@@ -2,10 +2,10 @@
 description: "Valida y reinstala Alfred Dev for Codex desde el worktree local"
 ---
 
-# /alfred-dev:update
+# $alfred-dev:update
 
 Este contrato se conserva por compatibilidad con Alfred Dev. En Codex se invoca
-como `/prompts:alfred-dev-update`.
+como `$alfred-dev:update`.
 
 ## Objetivo
 
@@ -30,7 +30,7 @@ python3 -B ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
 bash ./install.sh
 ```
 
-5. Pide abrir una sesion nueva de Codex para cargar prompts, subagents, hooks y
+5. Pide abrir una sesion nueva de Codex para cargar skills, subagents, hooks y
    MCP actualizados.
 
 ## Restricciones

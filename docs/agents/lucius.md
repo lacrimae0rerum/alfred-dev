@@ -41,7 +41,7 @@ que Alfred y el usuario decidan qué hacer con ellos.
 
 ## Cuando se activa
 
-Lucius puede invocarse directamente con `/alfred-dev:lucius`, y Alfred lo integra
+Lucius puede invocarse directamente con `$alfred-dev:lucius`, y Alfred lo integra
 como auditor secuencial de cierre en:
 
 - `feature:calidad`

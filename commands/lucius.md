@@ -3,7 +3,7 @@ description: "Segunda opinión técnica externa vía Codex CLI — diagnóstico 
 argument-hint: "[directorio opcional] [--scope all|security|tests|architecture|performance]"
 ---
 
-# /alfred-dev:lucius
+# $alfred-dev:lucius
 
 Eres Alfred, orquestador del equipo. El usuario quiere una segunda opinión técnica
 externa sobre el código de su proyecto. Activa a **Lucius** usando la herramienta
@@ -40,10 +40,10 @@ activar a Lucius con confirmación y preflight de Codex CLI.
 ## Uso
 
 ```
-/alfred-dev:lucius                       → audita el directorio actual
-/alfred-dev:lucius src/                  → audita un subdirectorio concreto
-/alfred-dev:lucius --scope security      → solo problemas de seguridad
-/alfred-dev:lucius src/ --scope tests    → tests en un subdirectorio
+$alfred-dev:lucius                       → audita el directorio actual
+$alfred-dev:lucius src/                  → audita un subdirectorio concreto
+$alfred-dev:lucius --scope security      → solo problemas de seguridad
+$alfred-dev:lucius src/ --scope tests    → tests en un subdirectorio
 ```
 
 ### Scopes disponibles
@@ -98,4 +98,4 @@ si detecta un riesgo, Alfred y el usuario deciden si corresponde reabrir el cier
   deja el bloqueo explícito y un siguiente paso verificable.
 - Si Lucius devuelve informe, separa hallazgos de recomendación: qué revisar
   con Alfred, qué podría delegarse a Codex CLI y qué requiere decisión humana.
-- No implementes ningún ítem como parte de `/alfred-dev:lucius`.
+- No implementes ningún ítem como parte de `$alfred-dev:lucius`.

@@ -17,56 +17,56 @@ reabrir el flujo:
 python3 .codex/alfred-continuity.py allow-stop-once "$PWD" --command "/alfred-dev:help"
 ```
 
-No conviertas `/alfred-dev:help` en un segundo `/next`: no ejecutes helpers de continuidad salvo `allow-stop-once`. Si el usuario pide foco operativo actual, recomiéndale `/alfred-dev:next`, `/alfred-dev:progress` o `/alfred-dev:status`.
+No conviertas `$alfred-dev:help` en un segundo `$alfred-dev:next`: no ejecutes helpers de continuidad salvo `allow-stop-once`. Si el usuario pide foco operativo actual, recomiéndale `$alfred-dev:next`, `$alfred-dev:progress` o `$alfred-dev:status`.
 
 ## Comandos core
 
 | Comando | Argumentos | Descripción |
 |---------|-----------|-------------|
-| `/alfred` | [petición opcional] | Entrada principal global: enruta al flujo o vista correcta sin obligar al usuario a elegir a mano |
-| `/alfred-dev:feature` | [descripción] | Ciclo completo: producto, estilo visual condicional, arquitectura, desarrollo, QA, documentación y entrega |
-| `/alfred-dev:quick` | [descripción] | Cambio pequeño y acotado con menos ceremonia, pero con tests y seguridad |
-| `/alfred-dev:fix` | [descripción] | Corrección de bugs: diagnóstico, corrección TDD y validación |
-| `/alfred-dev:spike` | [tema] | Investigación técnica sin compromiso de implementación, con opcionales solo bajo demanda |
-| `/alfred-dev:discuss` | [idea] | Refina una idea o feature antes de abrir un flujo completo |
-| `/alfred-dev:map-codebase` | [área] | Mapa brownfield persistente del repositorio antes de abrir nuevos flujos |
-| `/alfred-dev:progress` | -- | Vista principal del estado operativo: progreso, kanban, bloqueos, trazabilidad y UAT |
-| `/alfred-dev:verify` | [estado opcional] | Prepara o registra la validación manual/UAT del último entregable |
-| `/alfred-dev:audit` | -- | Auditoría completa con 4 agentes en paralelo |
-| `/alfred-dev:ship` | -- | Preparar entrega: auditoría, docs, empaquetado y despliegue |
-| `/alfred-dev:memory-ui` | -- | Abre una UI local en navegador con memoria SQLite, timeline, decisiones, grafo y búsqueda |
-| `/alfred-dev:config` | -- | Configurar autonomía, stack, agentes opcionales, memoria y personalidad |
-| `/alfred-dev:help` | -- | Esta ayuda |
+| `$alfred-dev:alfred` | [petición opcional] | Entrada principal global: enruta al flujo o vista correcta sin obligar al usuario a elegir a mano |
+| `$alfred-dev:feature` | [descripción] | Ciclo completo: producto, estilo visual condicional, arquitectura, desarrollo, QA, documentación y entrega |
+| `$alfred-dev:quick` | [descripción] | Cambio pequeño y acotado con menos ceremonia, pero con tests y seguridad |
+| `$alfred-dev:fix` | [descripción] | Corrección de bugs: diagnóstico, corrección TDD y validación |
+| `$alfred-dev:spike` | [tema] | Investigación técnica sin compromiso de implementación, con opcionales solo bajo demanda |
+| `$alfred-dev:discuss` | [idea] | Refina una idea o feature antes de abrir un flujo completo |
+| `$alfred-dev:map-codebase` | [área] | Mapa brownfield persistente del repositorio antes de abrir nuevos flujos |
+| `$alfred-dev:progress` | -- | Vista principal del estado operativo: progreso, kanban, bloqueos, trazabilidad y UAT |
+| `$alfred-dev:verify` | [estado opcional] | Prepara o registra la validación manual/UAT del último entregable |
+| `$alfred-dev:audit` | -- | Auditoría completa con 4 agentes en paralelo |
+| `$alfred-dev:ship` | -- | Preparar entrega: auditoría, docs, empaquetado y despliegue |
+| `$alfred-dev:memory-ui` | -- | Abre una UI local en navegador con memoria SQLite, timeline, decisiones, grafo y búsqueda |
+| `$alfred-dev:config` | -- | Configurar autonomía, stack, agentes opcionales, memoria y personalidad |
+| `$alfred-dev:help` | -- | Esta ayuda |
 
 ## Operativos avanzados
 
 | Comando | Argumentos | Descripción |
 |---------|-----------|-------------|
-| `/alfred-dev:resume` | -- | Retoma una sesión activa o un handoff pendiente |
-| `/alfred-dev:pause` | -- | Crea un handoff explícito para pausar el trabajo actual |
-| `/alfred-dev:search` | [texto] | Busca en artefactos de SonIA y memoria SQLite |
-| `/alfred-dev:sync-github` | [owner/repo opcional] | Ejecuta SonIA Sync sobre GitHub Issues |
-| `/alfred-dev:validate` | -- | Valida la salud operativa de kanban, trazabilidad, UAT y sync local |
-| `/alfred-dev:lucius` | [dir] [--scope X] | Segunda opinión técnica externa vía Codex CLI. Respeta el modelo configurado por el usuario y requiere acceso activo a Codex CLI |
-| `/alfred-dev:update` | -- | Comprobar y aplicar actualizaciones del plugin |
+| `$alfred-dev:resume` | -- | Retoma una sesión activa o un handoff pendiente |
+| `$alfred-dev:pause` | -- | Crea un handoff explícito para pausar el trabajo actual |
+| `$alfred-dev:search` | [texto] | Busca en artefactos de SonIA y memoria SQLite |
+| `$alfred-dev:sync-github` | [owner/repo opcional] | Ejecuta SonIA Sync sobre GitHub Issues |
+| `$alfred-dev:validate` | -- | Valida la salud operativa de kanban, trazabilidad, UAT y sync local |
+| `$alfred-dev:lucius` | [dir] [--scope X] | Segunda opinión técnica externa vía Codex CLI. Respeta el modelo configurado por el usuario y requiere acceso activo a Codex CLI |
+| `$alfred-dev:update` | -- | Comprobar y aplicar actualizaciones del plugin |
 
 ## Vistas y aliases operativos
 
 | Comando | Argumentos | Descripción |
 |---------|-----------|-------------|
-| `/alfred-dev:next` | -- | Decide el siguiente paso operativo y actúa si es inequívoco |
-| `/alfred-dev:status` | -- | Estado de la sesión activa |
-| `/alfred-dev:standup` | -- | Standup breve y accionable desde SonIA |
-| `/alfred-dev:blocked` | -- | Lista las tareas bloqueadas del proyecto |
-| `/alfred-dev:in-progress` | -- | Lista las tareas que están en curso |
+| `$alfred-dev:next` | -- | Decide el siguiente paso operativo y actúa si es inequívoco |
+| `$alfred-dev:status` | -- | Estado de la sesión activa |
+| `$alfred-dev:standup` | -- | Standup breve y accionable desde SonIA |
+| `$alfred-dev:blocked` | -- | Lista las tareas bloqueadas del proyecto |
+| `$alfred-dev:in-progress` | -- | Lista las tareas que están en curso |
 
 Si el usuario no sabe qué hacer ahora, prioriza estas entradas en este orden:
 
-1. `/alfred-dev:next` para decidir y actuar sobre el siguiente paso inequívoco.
-2. `/alfred-dev:progress` para ver panorama operativo, bloqueos y trazabilidad.
-3. `/alfred-dev:status` para inspeccionar en detalle la sesión actual o el handoff.
+1. `$alfred-dev:next` para decidir y actuar sobre el siguiente paso inequívoco.
+2. `$alfred-dev:progress` para ver panorama operativo, bloqueos y trazabilidad.
+3. `$alfred-dev:status` para inspeccionar en detalle la sesión actual o el handoff.
 
-Además, al escribir `/alfred` sin subcomando, Alfred actúa como asistente contextual: evalúa el estado del proyecto y la sesión, y dirige al usuario al flujo más adecuado. Internamente reutiliza el contrato de `commands/alfred.md`, pero esa ruta no se publica como `/alfred-dev:alfred` para no tapar el alias global.
+Además, al escribir `$alfred-dev:alfred` sin subcomando, Alfred actúa como asistente contextual: evalúa el estado del proyecto y la sesión, y dirige al usuario al flujo más adecuado. Internamente reutiliza el contrato de `commands/alfred.md`.
 
 Explica brevemente que Alfred Dev es un equipo de **10 agentes de núcleo** disponibles por defecto más **9 agentes opcionales** activables según el proyecto. Cubren el ciclo completo de ingeniería de software con quality gates y flujos automatizados.
 
@@ -76,7 +76,7 @@ Alfred (orquestador), product-owner, architect, senior-dev, security-officer, qa
 
 ### Agentes opcionales
 
-Se activan con `/alfred-dev:config`. Alfred combina sugerencias estáticas
+Se activan con `$alfred-dev:config`. Alfred combina sugerencias estáticas
 con composición dinámica según el proyecto y la tarea; no todos los agentes se
 activan por una simple heurística automática:
 

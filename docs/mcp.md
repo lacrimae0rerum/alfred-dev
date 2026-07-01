@@ -38,7 +38,7 @@ La separación es deliberada:
 
 ### Entrada de usuario
 
-El comando `/alfred-dev:memory-ui` prepara el contexto y delega en `python3 .codex/alfred-continuity.py memory-ui "$PWD"` para levantar la UI local.
+El comando `$alfred-dev:memory-ui` prepara el contexto y delega en `python3 .codex/alfred-continuity.py memory-ui "$PWD"` para levantar la UI local.
 
 ### Implementación
 
@@ -75,7 +75,7 @@ El resultado es una búsqueda contextual única, no dos búsquedas separadas peg
 
 El instalador puede parchear `.codex-plugin/mcp.json` cuando `python3` no apunta a una versión compatible. Ese detalle es importante porque el subsistema MCP comparte la misma exigencia que hooks y core: Python 3.10+ real, no asumido.
 
-Cuando el entorno no expone un `python3` válido por defecto, `install.sh` e `install.ps1` actualizan el runtime instalado para que el MCP use el intérprete correcto.
+Cuando el entorno no expone un `python3` válido por defecto, `install.sh` actualiza el runtime instalado para que el MCP use el intérprete correcto.
 
 ---
 

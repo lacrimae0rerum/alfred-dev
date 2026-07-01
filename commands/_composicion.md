@@ -31,16 +31,16 @@ el frontmatter YAML.
 
 2. NO uses `pregunta explícita al usuario` en este bootstrap inicial. El objetivo es que
    Alfred pueda actuar automáticamente desde la primera sesión si el usuario
-   invoca `/alfred`, `/alfred-dev:feature`, `/alfred-dev:quick`, `/alfred-dev:fix`,
-   `/alfred-dev:spike`, `/alfred-dev:audit` o `/alfred-dev:ship`.
+   invoca `$alfred-dev:alfred`, `$alfred-dev:feature`, `$alfred-dev:quick`, `$alfred-dev:fix`,
+   `$alfred-dev:spike`, `$alfred-dev:audit` o `$alfred-dev:ship`.
 
 3. Muestra un mensaje breve indicando que Alfred ha activado el modo
    autopilot por defecto para evitar bloquear el flujo en la primera sesión
-   y que el usuario puede cambiarlo más tarde con `/alfred-dev:config`.
+   y que el usuario puede cambiarlo más tarde con `$alfred-dev:config`.
 
 **Si la sección `autonomia:` YA existe:** salta este paso y continúa directamente.
 
-**Nota:** el usuario puede cambiar el modo en cualquier momento con `/alfred-dev:config`.
+**Nota:** el usuario puede cambiar el modo en cualquier momento con `$alfred-dev:config`.
 
 ## Paso 1 -- Contexto del proyecto
 

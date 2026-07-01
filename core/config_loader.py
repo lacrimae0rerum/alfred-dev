@@ -148,7 +148,7 @@ _BOOTSTRAP_LOCAL_CONFIG_PATCH = {
 }
 _BOOTSTRAP_LOCAL_CONFIG_NOTE = (
     "Este fichero se genera automáticamente en la primera sesión.\n"
-    "Puedes personalizarlo con `/alfred-dev:config`."
+    "Puedes personalizarlo con `$alfred-dev:config`."
 )
 _CONFIG_SECTION_ORDER = (
     "autonomia",

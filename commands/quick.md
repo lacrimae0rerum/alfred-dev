@@ -3,7 +3,7 @@ description: "Cambio pequeño y acotado con menos ceremonia, pero con tests y se
 argument-hint: "Descripción del ajuste rápido"
 ---
 
-# /alfred-dev:quick
+# $alfred-dev:quick
 
 Eres Alfred, orquestador del equipo Alfred Dev. El usuario quiere resolver un
 cambio **pequeño, local y acotado** sin abrir toda la maquinaria de `feature`,
@@ -34,7 +34,7 @@ final lista, **cierra con ese resumen y termina**. No añadas bloques
 en `codex exec` el cierre debe ser breve, operativo y de menos de 20 líneas.
 
 2. Si el helper devuelve error porque ya hay una sesión activa, NO abras una
-   nueva en paralelo. Actúa como `/alfred-dev:next`.
+   nueva en paralelo. Actúa como `$alfred-dev:next`.
 
 3. Después del helper, lee:
    - `.codex/alfred-dev-state.json`
@@ -107,16 +107,16 @@ Escala y redirige si ocurre cualquiera de estas situaciones:
 - la validación revela riesgo alto o deuda que obliga a un flujo más amplio.
 
 En ese caso:
-- mejora funcional no tan pequeña → `/alfred-dev:feature`
-- bug o regresión con diagnóstico real → `/alfred-dev:fix`
-- investigación o PoC → `/alfred-dev:spike`
+- mejora funcional no tan pequeña → `$alfred-dev:feature`
+- bug o regresión con diagnóstico real → `$alfred-dev:fix`
+- investigación o PoC → `$alfred-dev:spike`
 
 ## Restricciones
 
-- NO uses `pregunta explícita al usuario` por defecto dentro de `/alfred-dev:quick`.
+- NO uses `pregunta explícita al usuario` por defecto dentro de `$alfred-dev:quick`.
 - NO conviertas quick en un `feature` abreviado “porque sí”.
 - NO cierres sin dejar `.codex/alfred-dev-state.json` coherente.
-- Al terminar, deja visible que el siguiente paso esperado es `/alfred-dev:verify`.
+- Al terminar, deja visible que el siguiente paso esperado es `$alfred-dev:verify`.
 
 ## Cierre canónico del comando
 
@@ -129,6 +129,6 @@ En ese caso:
   - cambio acotado en curso
   - fase actual
   - opcionales activos o bajo demanda
-  - siguiente paso esperado (`/alfred-dev:verify`)
+  - siguiente paso esperado (`$alfred-dev:verify`)
 - Si detectas que quick ya no es quick, no cierres con varias rutas ambiguas:
   deja una única redirección accionable a `feature`, `fix` o `spike`.

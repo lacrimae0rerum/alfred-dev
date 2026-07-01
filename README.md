@@ -10,11 +10,10 @@ Codex surfaces allow:
 
 - **Agents:** 19 Alfred roles are available as Codex custom agents under
   `.codex/agents/`.
-- **Skills:** the 62 Alfred skills are flattened into Codex-compatible skill
-  packages under `skills/`.
-- **Commands:** Claude slash commands are ported to Codex custom prompts under
-  `prompts/`. The installer also creates the direct personal alias
-  `/alfred:dev` for the main Alfred entrypoint.
+- **Skills:** the 62 Alfred domain skills and 25 command-wrapper skills are
+  exposed as Codex-compatible skill packages under `skills/`.
+- **Commands:** Claude slash commands are ported to Codex skill mentions using
+  the `$alfred-dev:*` namespace.
 - **Hooks:** Alfred lifecycle hooks are bundled under `hooks/hooks.json` using
   Codex hook events.
 - **Memory:** `alfred-memory` is exposed as a bundled MCP server.
@@ -31,34 +30,33 @@ bash ./install.sh
 The installer:
 
 - registers this repo as a local Codex marketplace;
-- installs `alfred-codex@alfred-codex-local`;
+- installs `alfred-dev@alfred-dev-local`;
 - copies Alfred custom prompts into `~/.codex/prompts`;
 - copies Alfred custom agents into `~/.codex/agents`;
-- installs the direct personal skill alias `/alfred:dev`;
+- removes obsolete personal aliases from earlier local experiments;
 - refreshes the plugin cache.
 
 After installation, start a new Codex session.
 
 ## Invocation
 
-Use `/alfred:dev` as the direct Alfred entrypoint:
+Use `$alfred-dev:alfred` as the direct Alfred entrypoint:
 
 ```text
-/alfred:dev
-/alfred:dev crea una feature de autenticación con OAuth2
-/alfred:dev revisa el estado del proyecto y dime qué toca ahora
+$alfred-dev:alfred
+$alfred-dev:alfred crea una feature de autenticación con OAuth2
+$alfred-dev:alfred revisa el estado del proyecto y dime qué toca ahora
 ```
 
-Subcommands are also available as Codex custom prompts:
+Original Alfred subcommands are available as Codex skill mentions:
 
 ```text
-/prompts:alfred
-/prompts:alfred-dev-feature sistema de autenticación con OAuth2
-/prompts:alfred-dev-quick cambio pequeño y acotado
-/prompts:alfred-dev-fix el endpoint de login devuelve 500
-/prompts:alfred-dev-spike evaluar cola de eventos
-/prompts:alfred-dev-audit
-/prompts:alfred-dev-ship
+$alfred-dev:feature sistema de autenticación con OAuth2
+$alfred-dev:quick cambio pequeño y acotado
+$alfred-dev:fix el endpoint de login devuelve 500
+$alfred-dev:spike evaluar cola de eventos
+$alfred-dev:audit
+$alfred-dev:ship
 ```
 
 You can also invoke the installed skill directly in natural language:
@@ -138,8 +136,7 @@ python3 -m pytest tests/ -v
 ## Known Codex Differences
 
 - Bare `/alfred-dev:*` slash commands are not a plugin-distributed Codex
-  surface. They are available as `/prompts:alfred-dev-*` custom prompts after
-  running `install.sh`.
+  surface. The supported Codex form is `$alfred-dev:*`.
 - Codex subagents are explicit: Alfred asks Codex to spawn named subagents
   instead of relying on Claude's `Agent` tool.
 - Hook handlers are command hooks only; prompt/agent hook handlers parsed by

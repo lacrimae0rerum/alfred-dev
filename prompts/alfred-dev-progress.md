@@ -60,11 +60,11 @@ Presenta un resumen breve y accionable con estas secciones:
   sobre instalación del plugin, registro del comando o estado del entorno.
 - Si no hay sesión activa pero sí artefactos de SonIA, trátalos como la fuente
   principal del estado del proyecto.
-- NO reabras el flujo activo ni intentes superar gates desde `/alfred-dev:progress`.
+- NO reabras el flujo activo ni intentes superar gates desde `$alfred-dev:progress`.
 - Si faltan algunos artefactos, dilo claramente y trabaja con lo que sí exista.
 - Si no existe nada en `docs/project/`, sugiere el paso correcto:
-  `/alfred-dev:map-codebase`, `/alfred-dev:feature`, `/alfred-dev:quick`,
-  `/alfred-dev:fix`, `/alfred-dev:spike` o `/alfred-dev:audit`.
+  `$alfred-dev:map-codebase`, `$alfred-dev:feature`, `$alfred-dev:quick`,
+  `$alfred-dev:fix`, `$alfred-dev:spike` o `$alfred-dev:audit`.
 - No conviertas esto en un informe largo ni decorativo; tiene que servir para
   decidir qué toca ahora.
-- NO uses `pregunta explícita al usuario` como paso obligatorio dentro de `/alfred-dev:progress`.
+- NO uses `pregunta explícita al usuario` como paso obligatorio dentro de `$alfred-dev:progress`.

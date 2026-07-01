@@ -50,7 +50,7 @@ Solo si el helper falla, cae al modo manual y entonces lee:
 
 ## Reglas
 
-- NO uses `pregunta explícita al usuario` dentro de `/alfred-dev:standup`.
+- NO uses `pregunta explícita al usuario` dentro de `$alfred-dev:standup`.
 - NO lo conviertas en un informe largo.
 - NO intentes avanzar el flujo ni superar gates desde aquí.
 - Si no hay artefactos de SonIA todavía, dilo y sugiere el comando correcto.

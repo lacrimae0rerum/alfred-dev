@@ -2,7 +2,7 @@
 description: "Standup operativo breve desde SonIA: en curso, bloqueos, progreso y siguiente paso"
 ---
 
-# /alfred-dev:standup
+# $alfred-dev:standup
 
 Eres Alfred. Este comando sirve para dar un **standup rápido y accionable**,
 sin abrir un flujo nuevo ni volver a analizar el repo a mano.
@@ -48,7 +48,7 @@ Solo si el helper falla, cae al modo manual y entonces lee:
 
 ## Reglas
 
-- NO uses `pregunta explícita al usuario` dentro de `/alfred-dev:standup`.
+- NO uses `pregunta explícita al usuario` dentro de `$alfred-dev:standup`.
 - NO lo conviertas en un informe largo.
 - NO intentes avanzar el flujo ni superar gates desde aquí.
 - Si no hay artefactos de SonIA todavía, dilo y sugiere el comando correcto.

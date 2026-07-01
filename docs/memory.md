@@ -372,7 +372,7 @@ Desde v0.3.6 la captura automática esta centralizada en un único hook: `activi
 
 ### activity-capture.py (captura centralizada)
 
-Este script se ejecuta como hook `PostToolUse` para practicamente todas las herramientas de Codex (Write, Edit, Bash, Read, Glob, Grep, Agent, WebFetch, WebSearch, NotebookEdit), además de `UserPromptSubmit`, `UserPromptExpansion`, `PreCompact` y `Stop`. Actua como un hook fail-open: no bloquea la operación ni interfiere con el flujo de trabajo, pero en `UserPromptSubmit` y `UserPromptExpansion` puede preparar por adelantado artefactos helper-first de continuidad (`map-codebase`, `discuss`, `quick`, `feature`, `fix`, `spike`, `ship`, `audit`, `lucius` y el caso brownfield de `/alfred`) antes del razonamiento principal. Si algo falla --DB inexistente, JSON corrupto, configuración ausente--, imprime un aviso en stderr y sale con `exit 0`.
+Este script se ejecuta como hook `PostToolUse` para practicamente todas las herramientas de Codex (Write, Edit, Bash, Read, Glob, Grep, Agent, WebFetch, WebSearch, NotebookEdit), además de `UserPromptSubmit`, `UserPromptExpansion`, `PreCompact` y `Stop`. Actua como un hook fail-open: no bloquea la operación ni interfiere con el flujo de trabajo, pero en `UserPromptSubmit` y `UserPromptExpansion` puede preparar por adelantado artefactos helper-first de continuidad (`map-codebase`, `discuss`, `quick`, `feature`, `fix`, `spike`, `ship`, `audit`, `lucius` y el caso brownfield de `$alfred-dev:alfred`) antes del razonamiento principal. Si algo falla --DB inexistente, JSON corrupto, configuración ausente--, imprime un aviso en stderr y sale con `exit 0`.
 
 La razon de automatizar la captura en lugar de depender de que los agentes registren eventos manualmente es la fiabilidad: un agente puede olvidarse de llamar a `memory_log_event()`, pero el hook siempre se ejecuta porque esta conectado al ciclo de vida de las herramientas.
 
@@ -413,7 +413,7 @@ sequenceDiagram
 
     Note over U,B: --- Sesión actual: registro ---
 
-    U->>A: /alfred-dev:feature "Sistema de cache"
+    U->>A: $alfred-dev:feature "Sistema de cache"
     A->>S: Escribe estado inicial (comando, descripción)
     S-->>H: PostToolUse dispara el hook
     H->>H: Lee state.json, verifica memoria activa
@@ -491,7 +491,7 @@ La migración de v1 a v2 añade tres columnas (`decisions.tags`, `decisions.stat
 
 ## Configuración
 
-La memoria persistente se configura en la sección `memoria` del fichero `.codex/alfred-dev.local.md` del proyecto. También se puede gestionar de forma interactiva con `/alfred-dev:config`.
+La memoria persistente se configura en la sección `memoria` del fichero `.codex/alfred-dev.local.md` del proyecto. También se puede gestionar de forma interactiva con `$alfred-dev:config`.
 
 ### Claves de configuración
 

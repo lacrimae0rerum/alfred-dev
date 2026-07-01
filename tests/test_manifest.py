@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class ManifestTest(unittest.TestCase):
     def test_plugin_manifest_is_valid_shape(self) -> None:
         payload = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
-        self.assertEqual(payload["name"], "alfred-codex")
+        self.assertEqual(payload["name"], "alfred-dev")
         self.assertEqual(payload["version"], "0.6.1+codex.1")
         self.assertEqual(payload["skills"], "./skills/")
         self.assertEqual(payload["mcpServers"], "./.mcp.json")
@@ -60,9 +60,9 @@ class ManifestTest(unittest.TestCase):
 
     def test_repo_local_marketplace_metadata_exists(self) -> None:
         payload = json.loads((ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
-        self.assertEqual(payload["name"], "alfred-codex-local")
+        self.assertEqual(payload["name"], "alfred-dev-local")
         [entry] = payload["plugins"]
-        self.assertEqual(entry["name"], "alfred-codex")
+        self.assertEqual(entry["name"], "alfred-dev")
         self.assertEqual(entry["source"]["source"], "local")
         self.assertIn("policy", entry)
         self.assertIn("category", entry)
@@ -70,12 +70,17 @@ class ManifestTest(unittest.TestCase):
     def test_alfred_surface_counts_match_public_contract(self) -> None:
         self.assertEqual(len(list((ROOT / "agents").glob("*.md"))), 19)
         self.assertEqual(len(list((ROOT / ".codex" / "agents").glob("*.toml"))), 19)
-        self.assertEqual(len(list((ROOT / "skills").glob("*/SKILL.md"))), 62)
+        self.assertEqual(len(list((ROOT / "skills").glob("*/SKILL.md"))), 87)
         self.assertEqual(len(list((ROOT / "prompts").glob("*.md"))), 26)
+        self.assertEqual(len(list((ROOT / "commands").glob("*.md"))), 27)
         self.assertEqual(len(list((ROOT / "templates").glob("*.md"))), 7)
         self.assertTrue((ROOT / "hooks" / "hooks.json").is_file())
 
     def test_codex_agent_and_hook_files_parse(self) -> None:
+        agent_contracts = {path.stem for path in (ROOT / "agents").glob("*.md")}
+        codex_agents = {path.stem for path in (ROOT / ".codex" / "agents").glob("*.toml")}
+        self.assertEqual(codex_agents, agent_contracts)
+
         for path in sorted((ROOT / ".codex" / "agents").glob("*.toml")):
             with self.subTest(path=path.name):
                 tomllib.loads(path.read_text(encoding="utf-8"))
@@ -84,12 +89,30 @@ class ManifestTest(unittest.TestCase):
         self.assertEqual(set(hooks), {"hooks"})
         self.assertIn("SessionStart", hooks["hooks"])
 
-    def test_direct_alfred_dev_alias_is_packaged_for_installer(self) -> None:
-        alias = ROOT / "aliases" / "alfred-colon-dev" / "SKILL.md"
-        self.assertTrue(alias.is_file())
-        text = alias.read_text(encoding="utf-8")
-        self.assertIn("name: alfred:dev", text)
-        self.assertIn("/alfred:dev", text)
+    def test_alfred_dev_command_skills_are_packaged(self) -> None:
+        command_contracts = {
+            path.stem
+            for path in (ROOT / "commands").glob("*.md")
+            if path.stem not in {"_composicion", "alfred"}
+        }
+        command_skills = {
+            path.parent.name
+            for path in (ROOT / "skills").glob("*/SKILL.md")
+            if path.read_text(encoding="utf-8").startswith("---\nname:")
+            and "Alfred Dev command:" in path.read_text(encoding="utf-8")
+        }
+        self.assertEqual(command_skills, command_contracts)
+        self.assertTrue((ROOT / "skills" / "alfred" / "SKILL.md").is_file())
+
+        commands = command_contracts
+        for name in sorted(commands):
+            with self.subTest(name=name):
+                skill = ROOT / "skills" / name / "SKILL.md"
+                self.assertTrue(skill.is_file())
+                text = skill.read_text(encoding="utf-8")
+                self.assertIn(f"name: {name}", text)
+                self.assertIn(f"$alfred-dev:{name}", text)
+                self.assertIn(f"../../commands/{name}.md", text)
 
 
 if __name__ == "__main__":

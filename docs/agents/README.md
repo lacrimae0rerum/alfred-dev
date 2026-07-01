@@ -124,7 +124,7 @@ Los agentes de Alfred Dev no se comunican entre si directamente. No existe un ca
 
 El flujo, simplificado, funciona así:
 
-1. El usuario lanza un comando (por ejemplo, `/alfred-dev:feature`).
+1. El usuario lanza un comando (por ejemplo, `$alfred-dev:feature`).
 2. Alfred crea una sesión y arranca la primera fase.
 3. Alfred invoca al agente correspondiente mediante Agent, pasandole su system prompt y los artefactos relevantes.
 4. El agente ejecuta su trabajo y devuelve un resultado.

@@ -40,7 +40,7 @@ ejecutar la auditoría respetando el preflight y las gates.
 
 Antes de lanzar la auditoría, localiza el fichero compartido de composición dentro del plugin Alfred Dev, NO dentro del proyecto auditado. Si no conoces la ruta exacta, búscala primero en la instalación del plugin (por ejemplo, bajo `~/.codex/plugins/cache/alfred-dev/**/commands/_composicion.md`) y léela desde ahí.
 
-Después, sigue el protocolo de composición dinámica (pasos 1 a 4). Si por cualquier motivo no consigues localizar ese fichero, NO bloquees `/alfred-dev:audit` solo por esa búsqueda: continúa con el equipo de núcleo por defecto (qa-engineer, security-officer, architect, tech-writer) y deja constancia breve de la degradación.
+Después, sigue el protocolo de composición dinámica (pasos 1 a 4). Si por cualquier motivo no consigues localizar ese fichero, NO bloquees `$alfred-dev:audit` solo por esa búsqueda: continúa con el equipo de núcleo por defecto (qa-engineer, security-officer, architect, tech-writer) y deja constancia breve de la degradación.
 
 Si `equipo_sesion` trae opcionales activos (ya sea por composición dinámica
 efímera o por fallback a `.codex/alfred-dev.local.md`), consúltalo siempre
@@ -77,7 +77,7 @@ Lanza 4 subagents EN PARALELO:
      > **INSTRUCCIÓN OBLIGATORIA -- SonarQube:**
      > Tu PRIMER paso, antes de cualquier otra acción, es ejecutar el análisis de SonarQube. Esto NO es opcional. NO lo omitas. NO lo pospongas. NO decidas que "no es necesario". Sigue estos pasos exactos:
      > 1. Lee el skill COMPLETO con Read usando la ruta instalada del plugin Alfred Dev. Si `${ALFRED_CODEX_PLUGIN_ROOT}` no está resuelta en tu contexto, localiza primero `skills/calidad/sonarqube/SKILL.md` dentro de la instalación del plugin y léelo desde ahí.
-     > 2. Ejecuta el preflight del skill al pie de la letra. Si requiere instalar Docker, arrancarlo o abrir Docker Desktop, usa exclusivamente la autorización ya obtenida en el preflight de `/alfred-dev:audit`.
+     > 2. Ejecuta el preflight del skill al pie de la letra. Si requiere instalar Docker, arrancarlo o abrir Docker Desktop, usa exclusivamente la autorización ya obtenida en el preflight de `$alfred-dev:audit`.
      > 3. Ejecuta el análisis completo de SonarQube, integra los hallazgos en tu informe y limpia el contenedor temporal al terminar.
      > 4. Si SonarQube no puede ejecutarse tras el intento autorizado (por ejemplo, permisos insuficientes, daemon caído, puerto ocupado), documéntalo explícitamente en el informe. NUNCA lo omitas sin dejarlo por escrito.
    - **Si `sonarqube_autorizado = false`**: cuando lances el agente, indícale explícitamente que NO intente instalar Docker, NO intente arrancar el daemon y NO intente abrir Docker Desktop. Debe continuar con la auditoría manual y dejar por escrito en el informe que SonarQube se omitió por decisión explícita del usuario o por falta de permisos.

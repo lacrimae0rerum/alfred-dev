@@ -12,19 +12,19 @@ o entregar software con el equipo especializado del plugin.
 ## Superficie Codex
 
 Codex no publica comandos slash arbitrarios desde plugins con la misma forma que
-Alfred Dev original. En este port la invocación operativa vive en prompts instalables:
+Alfred Dev original. En este port la invocación operativa usa menciones de
+skills del plugin con el mismo namespace funcional:
 
-- `/prompts:alfred`
-- `/prompts:alfred-dev-feature`
-- `/prompts:alfred-dev-quick`
-- `/prompts:alfred-dev-fix`
-- `/prompts:alfred-dev-spike`
-- `/prompts:alfred-dev-audit`
-- `/prompts:alfred-dev-ship`
+- `$alfred-dev:alfred`
+- `$alfred-dev:feature`
+- `$alfred-dev:quick`
+- `$alfred-dev:fix`
+- `$alfred-dev:spike`
+- `$alfred-dev:audit`
+- `$alfred-dev:ship`
 
-Cuando el usuario escriba una intención de Alfred sin prompt explícito, aplica
-el mismo contrato de `prompts/alfred.md` si está disponible en el plugin o en
-`~/.codex/prompts/alfred.md`.
+Cuando el usuario escriba una intención de Alfred sin skill explícito, aplica
+el mismo contrato de `commands/alfred.md` si está disponible en el plugin.
 
 ## Protocolo
 
@@ -49,8 +49,8 @@ el mismo contrato de `prompts/alfred.md` si está disponible en el plugin o en
 
 ## Restricciones
 
-- No presentes `/alfred-dev:*` como slash command nativo de Codex si no está
-  instalado como prompt en `~/.codex/prompts`.
+- No presentes `/alfred-dev:*` como slash command nativo de Codex. La forma
+  invocable soportada por Codex es `$alfred-dev:*`.
 - No uses rutas `.claude/` ni variables del runtime Claude para estado Codex.
 - No escribas secretos, credenciales ni datos sensibles en memoria.
 - No amplíes el flujo más allá del objetivo del usuario.

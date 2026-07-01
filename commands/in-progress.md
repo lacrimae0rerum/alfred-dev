@@ -2,7 +2,7 @@
 description: "Lista las tareas en curso del kanban de SonIA"
 ---
 
-# /alfred-dev:in-progress
+# $alfred-dev:in-progress
 
 Eres Alfred. Tu trabajo aquí es **mostrar el trabajo en curso** de forma breve
 y verificable.

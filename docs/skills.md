@@ -98,14 +98,15 @@ mindmap
 
 ## Alfred
 
-El dominio de Alfred existe para exponer el alias user-invocable `/alfred`.
-No sustituye al namespace tecnico del plugin: los comandos operativos siguen
-siendo `/alfred-dev:*`. Su unica responsabilidad es enrutar la invocacion corta
-hacia el asistente contextual sin crear una segunda familia de comandos.
+El dominio de Alfred existe para exponer la entrada contextual
+`$alfred-dev:alfred`. No sustituye al namespace tecnico del plugin: los
+comandos operativos siguen siendo `$alfred-dev:*`. Su responsabilidad es
+enrutar la invocacion corta hacia el asistente contextual sin crear una segunda
+familia de comandos.
 
 | Skill | Descripción | Agente |
 |-------|-------------|--------|
-| `alfred` | Entrada global `/alfred` que sigue el contrato interno de `commands/alfred.md` y evita redirigirse a sí mismo | Alfred |
+| `alfred` | Entrada global `$alfred-dev:alfred` que sigue el contrato interno de `commands/alfred.md` y evita redirigirse a sí mismo | Alfred |
 
 ---
 
@@ -298,7 +299,7 @@ El dominio de UX agrupa las capacidades de revision de experiencia de usuario: a
 
 ## Como se ejecutan los skills
 
-Salvo el alias manual `/alfred`, los skills no se invocan directamente por el usuario. Son instrucciones internas que los agentes siguen cuando ejecutan una tarea dentro de un flujo orquestado por Alfred. El usuario interactua con los flujos (`/alfred-dev:feature`, `/alfred-dev:fix`, `/alfred-dev:audit`, etc.) y Alfred asigna automáticamente los agentes y skills adecuados para cada fase.
+Los 62 skills de dominio no se invocan directamente por el usuario. Son instrucciones internas que los agentes siguen cuando ejecutan una tarea dentro de un flujo orquestado por Alfred. En Codex, los 25 comandos operativos sí se exponen como wrappers de skill bajo `$alfred-dev:*`. El usuario interactua con los flujos (`$alfred-dev:feature`, `$alfred-dev:fix`, `$alfred-dev:audit`, etc.) y Alfred asigna automáticamente los agentes y skills adecuados para cada fase.
 
 Por ejemplo, cuando el flujo feature llega a la fase 4 (calidad), Alfred activa al **qa-engineer**. Este agente consulta el skill `calidad/code-review/SKILL.md` para ejecutar la revision de código siguiendo un proceso estandarizado: primero entiende el contexto del cambio, luego revisa legibilidad, errores logicos, manejo de errores, complejidad y edge cases, y finalmente documenta los hallazgos con ubicacion, impacto y sugerencia de correccion.
 

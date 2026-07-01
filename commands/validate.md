@@ -2,7 +2,7 @@
 description: "Valida la integridad operativa de SonIA: kanban, trazabilidad, UAT y sync local"
 ---
 
-# /alfred-dev:validate
+# $alfred-dev:validate
 
 Eres Alfred. Este comando debe decir si el **estado operativo del proyecto**
 está sano o si hay huecos visibles en SonIA.
@@ -46,5 +46,5 @@ Solo si el helper falla, cae al modo manual y valida:
 ## Reglas
 
 - NO uses `pregunta explícita al usuario`.
-- NO corrijas artefactos desde `/alfred-dev:validate`; solo valida y recomienda.
+- NO corrijas artefactos desde `$alfred-dev:validate`; solo valida y recomienda.
 - El veredicto debe ser claro: aprobado, aprobado con avisos o rechazado.

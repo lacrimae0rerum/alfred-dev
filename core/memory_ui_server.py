@@ -741,7 +741,7 @@ HTML_TEMPLATE = """<!doctype html>
         title = "Este workspace parece temporal o vacío.";
         body = "No es un repositorio Git y no se detecta código claro. La SQLite existe, pero Alfred todavía no ha trabajado aquí de forma real.";
       } else if (workspace.is_git_repo || workspace.has_codebase) {
-        body = "El proyecto existe, pero Alfred aún no ha sembrado memoria suficiente. Prueba con `/alfred-dev:map-codebase`, `/alfred-dev:discuss` o `/alfred-dev:quick` y refresca.";
+        body = "El proyecto existe, pero Alfred aún no ha sembrado memoria suficiente. Prueba con `$alfred-dev:map-codebase`, `$alfred-dev:discuss` o `$alfred-dev:quick` y refresca.";
       }
 
       element.innerHTML = `<strong>${title}</strong>${body}${sampleText}`;
@@ -771,7 +771,7 @@ HTML_TEMPLATE = """<!doctype html>
         lines.push(`
           <li>
             <small>Acción inmediata</small>
-            <div class="decision-title">/alfred-dev:${esc(nextAction.command || "alfred")}</div>
+            <div class="decision-title">$alfred-dev:${esc(nextAction.command || "alfred")}</div>
             <div class="chip-row">
               ${urgencyChip(nextAction.urgency)}
               ${nextAction.source_label ? `<span class="chip">${esc(nextAction.source_label)}</span>` : ""}
@@ -1341,9 +1341,11 @@ def _humanize_event(event: Dict[str, Any]) -> Dict[str, Any]:
         if recommended:
             recommended_text = str(recommended).strip()
             if recommended_text.startswith("/alfred-dev:"):
+                recommended_text = "$alfred-dev:" + recommended_text.split(":", 1)[1]
+            if recommended_text.startswith("$alfred-dev:"):
                 detail_lines.append(f"Siguiente paso: {recommended_text}")
             else:
-                detail_lines.append(f"Siguiente paso: /alfred-dev:{recommended_text}")
+                detail_lines.append(f"Siguiente paso: $alfred-dev:{recommended_text}")
         body = _compact_text(
             content or f"Alfred dejó contexto listo para continuar con {helper_name}.",
             260,

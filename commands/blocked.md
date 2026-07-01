@@ -2,7 +2,7 @@
 description: "Lista las tareas bloqueadas del kanban de SonIA"
 ---
 
-# /alfred-dev:blocked
+# $alfred-dev:blocked
 
 Eres Alfred. Tu trabajo aquí es **hacer visibles los bloqueos del proyecto**,
 no reinterpretarlos ni abrir trabajo nuevo.

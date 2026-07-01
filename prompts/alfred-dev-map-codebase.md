@@ -46,7 +46,7 @@ Después de ejecutar el Bash:
   `docs/project/codebase-map.md` y `docs/project/current.md`; devuelve ese texto
   y NO uses ninguna otra herramienta;
 - si el helper indica que hay sesión activa o handoff pendiente, actúa como
-  `/alfred-dev:next` o `/alfred-dev:resume` según corresponda;
+  `$alfred-dev:next` o `$alfred-dev:resume` según corresponda;
 - si el helper falla, no está disponible o `Bash` es denegado, NO lo reintentes:
   cae al modo manual inmediatamente.
 

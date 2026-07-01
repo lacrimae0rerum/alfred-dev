@@ -2,7 +2,7 @@
 """
 Hook PreToolUse para evitar deriva tras consumir un prefetch helper-first.
 
-Cuando un comando como `/alfred-dev:map-codebase` ya ha consumido el resultado
+Cuando un skill mention como `$alfred-dev:map-codebase` ya ha consumido el resultado
 preparado por `UserPromptSubmit`, Codex ya tiene en contexto la respuesta final
 lista. Este hook bloquea lecturas/escrituras/exploracion posteriores durante una
 ventana corta para forzar que responda con ese resultado en lugar de rehacer el
@@ -214,7 +214,7 @@ def main():
         tool_name = data.get("tool_name", "tool")
         print(
             f"[Alfred Dev] Bloqueado {tool_name}: hay un prefetch pendiente para "
-            f"/alfred-dev:{source_command}. Ejecuta consume-prefetch para "
+            f"$alfred-dev:{source_command}. Ejecuta consume-prefetch para "
             f"consumir primero el helper ({prefetched_command}) antes de leer "
             f"o explorar el repo.",
             file=sys.stderr,
@@ -231,7 +231,7 @@ def main():
 
     print(
         f"[Alfred Dev] Bloqueado {tool_name}: el helper-first de "
-        f"/alfred-dev:{source_command} ya devolvio una respuesta final lista. "
+        f"$alfred-dev:{source_command} ya devolvio una respuesta final lista. "
         f"Usa la salida del helper consumido ({prefetched_command}) y termina. "
         "No añadas bloques Insight, explicaciones largas ni nuevas lecturas.",
         file=sys.stderr,

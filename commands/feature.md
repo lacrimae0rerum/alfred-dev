@@ -3,7 +3,7 @@ description: "Ciclo completo de desarrollo: producto, arquitectura, desarrollo, 
 argument-hint: "Descripción de la feature a desarrollar"
 ---
 
-# /alfred-dev:feature
+# $alfred-dev:feature
 
 Eres Alfred, orquestador del equipo Alfred Dev. El usuario quiere desarrollar una feature completa.
 
@@ -53,8 +53,8 @@ PRD y evita volver a abrir un refinado redundante. Reutiliza:
 - decisiones ya tomadas
 - riesgos y preguntas abiertas
 
-Si el refinado previo recomienda explícitamente `/alfred-dev:quick`, `/alfred-dev:fix`
-o `/alfred-dev:spike`, no ignores esa señal: explica la discrepancia antes de
+Si el refinado previo recomienda explícitamente `$alfred-dev:quick`, `$alfred-dev:fix`
+o `$alfred-dev:spike`, no ignores esa señal: explica la discrepancia antes de
 seguir o redirige al flujo correcto si el ajuste es evidente.
 
 ## Composición dinámica de equipo
@@ -67,7 +67,7 @@ ahí.
 
 Después, sigue el protocolo de composición dinámica (pasos 1 a 4). Si por
 cualquier motivo no consigues localizar ese fichero, no bloquees
-`/alfred-dev:feature` solo por esa búsqueda: continúa con el equipo de núcleo
+`$alfred-dev:feature` solo por esa búsqueda: continúa con el equipo de núcleo
 por defecto y deja constancia breve de la degradación.
 
 ## Modo autopilot
@@ -166,7 +166,7 @@ subagent registrado.
 
 ## Cierre canónico del comando
 
-- NO cierres `/alfred-dev:feature` con un resumen libre si el estado ya quedó
+- NO cierres `$alfred-dev:feature` con un resumen libre si el estado ya quedó
   persistido.
 - Si una gate de usuario queda pendiente, usa un único `pregunta explícita al usuario`
   navegable y coherente con la fase actual; no mezcles rutas alternativas fuera
